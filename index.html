@@ -1,0 +1,355 @@
+<!doctype html><html><head><meta charset="utf-8"><title>Agenda do Atleta - Copa Kimura</title><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Agenda do Atleta</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Barlow:wght@400;500;600&display=swap">
+<style>
+/* Layout: app de celular em coluna única. Cabeçalho com seletor de atleta, abas embaixo, cartões de jogo com horário grande à esquerda (como placar de ginásio). */
+:root{
+  --bg:#f1f3f6; --surface:#ffffff; --ink:#0f1b2d; --muted:#5d6b80; --line:#dde2ea;
+  --accent:#e8590c; --accent-ink:#ffffff; --accent-soft:#fdeadd;
+  --ok:#17803d; --ok-soft:#dff3e5; --warn:#a15c00; --warn-soft:#fbefd2;
+  --display:"Barlow Condensed","Arial Narrow",system-ui,sans-serif;
+  --body:"Barlow",system-ui,-apple-system,"Segoe UI",sans-serif;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0c1320; --surface:#152033; --ink:#eef2f8; --muted:#97a6bd; --line:#26344c;
+  --accent:#ff8a4c; --accent-ink:#1a0d03; --accent-soft:#3a2314;
+  --ok:#5fd18a; --ok-soft:#14301f; --warn:#f2c35c; --warn-soft:#352a10; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0c1320; --surface:#152033; --ink:#eef2f8; --muted:#97a6bd; --line:#26344c;
+  --accent:#ff8a4c; --accent-ink:#1a0d03; --accent-soft:#3a2314;
+  --ok:#5fd18a; --ok-soft:#14301f; --warn:#f2c35c; --warn-soft:#352a10; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font:16px/1.4 var(--body);padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:0 96px}
+.wrap{max-width:640px;margin:0 auto}
+button{font:inherit;color:inherit;cursor:pointer}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+header{padding-top:18px}
+.brand{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
+h1{font:700 28px/1 var(--display);letter-spacing:.02em;text-transform:uppercase;margin:0}
+.sub{color:var(--muted);font-size:14px;margin-top:4px}
+.ghost{background:none;border:1px solid var(--line);border-radius:8px;padding:8px 12px;font-size:14px;color:var(--muted);text-decoration:none;display:inline-flex;align-items:center;min-height:38px;white-space:nowrap}
+.top-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.live{background:var(--accent);color:var(--accent-ink);border-color:var(--accent);font-weight:600}
+.who{margin-top:16px}
+.label{font:600 12px/1 var(--body);letter-spacing:.09em;text-transform:uppercase;color:var(--muted)}
+.chips{display:flex;gap:8px;overflow-x:auto;padding:8px 0 4px;scrollbar-width:none;margin-right:calc(-1 * max(16px,env(safe-area-inset-right,0px)))}
+.chips::-webkit-scrollbar{display:none}
+.chip{flex:none;border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:9px 14px;font-weight:500;font-size:15px;min-height:44px}
+.chip[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.chip small{opacity:.7;margin-left:4px}
+main{margin-top:16px;display:flex;flex-direction:column;gap:12px}
+.day{font:700 20px/1 var(--display);text-transform:uppercase;letter-spacing:.04em;padding-top:8px;display:flex;align-items:center;gap:10px}
+.day::after{content:"";flex:1;height:1px;background:var(--line)}
+.next{background:var(--ink);color:var(--bg);border-radius:14px;padding:16px;display:grid;gap:10px}
+.next .label{color:var(--accent)}
+.next .big{font:700 56px/1 var(--display);font-variant-numeric:tabular-nums}
+.next .where{font:700 30px/1.05 var(--display);text-transform:uppercase}
+.next .vs{font-size:17px;overflow-wrap:anywhere}
+.next .meta{opacity:.75;font-size:14px}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:12px;display:grid;grid-template-columns:76px minmax(0,1fr);overflow:hidden}
+.card.done{opacity:.6}
+.time{border-right:1px solid var(--line);padding:12px 6px;text-align:center;display:flex;flex-direction:column;justify-content:center;gap:2px}
+.time b{font:700 30px/1 var(--display);font-variant-numeric:tabular-nums}
+.time span{font-size:12px;color:var(--muted)}
+.body{padding:12px 14px;min-width:0;display:grid;gap:6px}
+.tags{display:flex;gap:6px;flex-wrap:wrap}
+.tag{font-size:12px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;border-radius:6px;padding:3px 7px;background:var(--bg);color:var(--muted)}
+.tag.court{background:var(--accent-soft);color:var(--accent)}
+.side{overflow-wrap:anywhere}
+.side.me{font-weight:600}
+.side.me::before{content:"";display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--accent);margin-right:8px}
+.side.tbd{color:var(--muted);font-style:italic}
+.x{color:var(--muted);font-size:13px;padding-left:16px}
+.mem{font-size:14px;color:var(--accent);font-weight:600}
+.gap{margin:0;font-size:14px;color:var(--muted);text-align:center;padding:2px 0}
+.gap b{color:var(--warn);font-weight:600}
+.gap.tight b{color:var(--accent)}
+.finish{justify-self:start;border:1px solid var(--line);background:none;border-radius:8px;padding:7px 12px;font-size:14px;color:var(--muted);min-height:36px}
+.card.done .finish{background:var(--ok-soft);color:var(--ok);border-color:transparent}
+.finish.on-dark{border-color:rgba(255,255,255,.35);color:var(--bg)}
+.tools{display:grid;gap:8px}
+input[type=search],textarea{width:100%;background:var(--surface);color:var(--ink);border:1px solid var(--line);border-radius:10px;padding:11px 14px;font:inherit}
+textarea{min-height:130px;font-size:14px}
+.empty{padding:28px 16px;text-align:center;color:var(--muted);border:1px dashed var(--line);border-radius:12px}
+.ath{display:flex;justify-content:space-between;align-items:center;gap:12px;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:14px;width:100%;text-align:left}
+.ath strong{font-weight:600}
+.ath .n{font:700 24px/1 var(--display);font-variant-numeric:tabular-nums;color:var(--accent)}
+.ath small{color:var(--muted);display:block}
+.note{font-size:13px;color:var(--muted);text-align:center;padding:8px 0}
+nav{position:fixed;left:0;right:0;bottom:0;background:var(--surface);border-top:1px solid var(--line);padding:8px max(16px,env(safe-area-inset-right,0px)) calc(8px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px));z-index:5}
+nav .in{max-width:640px;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr);gap:4px}
+.count{font:700 20px/1.1 var(--display);color:var(--accent);text-transform:uppercase;letter-spacing:.03em}
+.group{background:var(--surface);border:1px solid var(--line);border-radius:12px;overflow:hidden}
+.gh{display:flex;align-items:baseline;gap:10px;padding:10px 14px;border-bottom:1px solid var(--line);background:var(--bg)}
+.gh b{font:700 26px/1 var(--display);font-variant-numeric:tabular-nums}
+.gh span{font-size:13px;color:var(--muted)}
+.slot{display:grid;grid-template-columns:76px minmax(0,1fr);gap:10px;padding:10px 14px;align-items:start}
+.slot+.slot{border-top:1px solid var(--line)}
+.slot.done{opacity:.55}
+.slot b{font:700 18px/1.2 var(--display);text-transform:uppercase;color:var(--accent)}
+.slot span{overflow-wrap:anywhere}
+.slot small{display:block;color:var(--muted);font-size:12px}
+nav button{border:0;background:none;border-radius:10px;padding:10px 2px;font-weight:600;font-size:13px;color:var(--muted);min-height:48px}
+nav button[aria-selected="true"]{background:var(--ink);color:var(--bg)}
+.sheet{display:grid;gap:10px;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:14px}
+.sheet p{margin:0;font-size:14px;color:var(--muted)}
+.sheet code{background:var(--bg);padding:1px 5px;border-radius:4px;font-size:13px}
+.primary{background:var(--accent);color:var(--accent-ink);border:0;border-radius:10px;padding:12px 16px;font-weight:600;min-height:46px}
+.msg{font-size:14px;color:var(--ok)}
+.msg.err{color:var(--warn)}
+@media (prefers-reduced-motion:no-preference){.chip,nav button{transition:background .15s}}
+</style>
+
+<div class="wrap">
+  <header>
+    <div class="brand">
+      <div>
+        <h1 id="title">Agenda do Atleta</h1>
+        <div class="sub" id="sub"></div>
+      </div>
+    </div>
+    <div class="top-actions">
+      <a class="ghost live" id="liveLink" href="https://geradorjogos.com.br/competicoes/8abtg1zl" target="_blank" rel="noopener">Ver ao vivo no site</a>
+      <button class="ghost" id="btnImport" type="button">Carregar listas</button>
+    </div>
+    <div class="who">
+      <div class="label">Quem é você?</div>
+      <div class="chips" id="who" role="group" aria-label="Escolher atleta"></div>
+    </div>
+  </header>
+  <main id="main"></main>
+</div>
+<nav><div class="in" role="tablist">
+  <button role="tab" data-tab="mine" type="button">Meus jogos</button>
+  <button role="tab" data-tab="time" type="button">Por horário</button>
+  <button role="tab" data-tab="all" type="button">Buscar</button>
+  <button role="tab" data-tab="club" type="button">Atletas</button>
+</div></nav>
+
+<script>
+(function(){
+/* Programação oficial publicada no site em 12/11/2026 15:31, filtrada para os atletas e equipes do clube.
+   Colunas: dia, hora, mesa, nº do jogo, categoria, fase, participante A, participante B, atleta/equipe do clube em A, em B */
+var ROWS=[["14","08:00","3","003","ABSOLUTO D MASC EQUIPE","OITAVAS DE FINAL","SONIBRAM","ASSOCIAÇÃO DOS MESATENISTAS DE CASCAVEL - AMC 1","","Equipe AMC 1"],["14","08:00","13","003","ABSOLUTO A MASC EQUIPE","QUARTAS DE FINAL","ASSOCIAÇÃO DOS MESATENISTAS DE CASCAVEL - AMC 1","AMG GUAÍRA","Equipe AMC 1",""],["14","08:00","14","004","ABSOLUTO D MASC EQUIPE","QUARTAS DE FINAL","TOLEDO","ASSOCIAÇÃO DOS MESATENISTAS DE CASCAVEL - AMC","","Equipe AMC"],["14","08:00","18","002","SUB- 15 MASC EQUIPE","QUARTAS DE FINAL","ASSOCIAÇÃO DOS MESATENISTAS DE CASCAVEL - AMC","Club Lapacho","Equipe AMC",""],["14","08:00","19","004","ABSOLUTO A MASC EQUIPE","QUARTAS DE FINAL","ASSOCIAÇÃO DOS MESATENISTAS DE CASCAVEL - AMC 2","CTMPG","Equipe AMC 2",""],["14","08:50","20","002","MASTER 50 MASC EQUIPE","SEMIFINAL","ASSOCIAÇÃO DOS MESATENISTAS DE CASCAVEL - AMC","FEDERACIÓN PARAGUAYA DE TENIS DE MESA","Equipe AMC",""],["14","09:40","7","006","ABSOLUTO A MASC EQUIPE","QUARTAS DE FINAL","Vencedor Jogo 001","ASSOCIAÇÃO DOS MESATENISTAS DE CASCAVEL - AMC 3","","Equipe AMC 3"],["14","10:30","15","002","MASTER 40 MASC EQUIPE","FINAL","ASSOCIAÇÃO DOS MESATENISTAS DE CASCAVEL - AMC","Vencedor Jogo 001","Equipe AMC",""],["14","10:30","17","002","ABSOLUTO C FEM EQUIPE","FINAL","ASSOCIAÇÃO DOS MESATENISTAS DE CASCAVEL - AMC","Vencedor Jogo 001","Equipe AMC",""],["14","13:15","10","002","SUB-11 FEM","GRUPO B","MANUELA AYUMI POLIANI DOI","LETICIA RUFATI","","Letícia Rufati"],["14","13:40","1","001","SUB- 17 MASC","GRUPO A","VICTOR CORAÇA","NICOLAS EMANUEL DE MELO PERALTA","Victor Coraça",""],["14","13:40","18","007","SUB- 17 MASC","GRUPO G","TAIKI MATSUNAGA","MIGUEL SCUSSIATTO","","Miguel Scussiatto"],["14","14:00","7","004","SUB-11 FEM","GRUPO B","AGUSTINA ELGUE","LETICIA RUFATI","","Letícia Rufati"],["14","14:20","15","014","SUB- 17 MASC","GRUPO I","Bruno Martínez","JOÃO PAVILAKI","","João Pavilaki"],["14","14:25","8","017","SUB- 17 MASC","GRUPO C","MATHEUS NASCIMENTO","DIOGO DE OLIVEIRA RIVILI","Matheus Nascimento",""],["14","15:10","12","024","SUB- 17 MASC","GRUPO I","IVÁN GIMENEZ","JOÃO PAVILAKI","","João Pavilaki"],["14","15:10","17","026","SUB- 17 MASC","GRUPO G","MIGUEL SCUSSIATTO","JOSÉ FERNANDEZ","Miguel Scussiatto",""],["14","15:15","4","029","SUB- 17 MASC","GRUPO C","JOÃO PAULO BOFFO GONÇALVES","MATHEUS NASCIMENTO","","Matheus Nascimento"],["14","15:15","6","031","SUB- 17 MASC","GRUPO A","VICTOR CORAÇA","GABRIEL ISSAMO EBUCHI DE PAULA","Victor Coraça",""],["14","15:30","14","006","SUB- 15 MASC","32 AVOS DE FINAL","MIGUEL BARBOSA","FABRICIO GÓMEZ","Miguel Barbosa",""],["14","15:35","12","009","SUB- 15 MASC","16 AVOS DE FINAL","FABRICIO DOLDAN","JOÃO GUILHERME TREIB","","João Guilherme Treib"],["14","16:00","7","039","SUB- 17 MASC","GRUPO G","ARTHUR VINÍCIUS LORSCHETTER MOKFA","MIGUEL SCUSSIATTO","","Miguel Scussiatto"],["14","16:05","1","040","SUB- 17 MASC","GRUPO I","JOÃO PAVILAKI","DAVI TAKAYAMA","João Pavilaki",""],["14","16:20","12","018","SUB- 15 MASC","16 AVOS DE FINAL","ARTHUR MIRANDA","PEDRO EGASHIRA","Arthur Miranda",""],["14","16:25","4","023","SUB- 15 MASC","16 AVOS DE FINAL","JOÃO PAVILAKI","Vencedor Jogo 007","João Pavilaki",""],["14","16:35","15","024","SUB- 15 MASC","16 AVOS DE FINAL","MIGUEL SCUSSIATTO","Vencedor Jogo 011","Miguel Scussiatto",""],["14","17:05","11","002","SUB- 17 FEM","GRUPO B","NATALY MURDOCH","KAROLINE GOMES OLIVEIRA GRUCHOSKI","","Karoline Gruchoski"],["14","17:35","1","001","ESPECIAL MASC","32 AVOS DE FINAL","LEONARDO SUPERTI","VICTOR CORAÇA","","Victor Coraça"],["14","17:45","16","008","SUB- 17 FEM","GRUPO B","ISABELA DE OLIVEIRA","KAROLINE GOMES OLIVEIRA GRUCHOSKI","Isabela de Oliveira","Karoline Gruchoski"],["14","18:00","6","005","ESPECIAL MASC","16 AVOS DE FINAL","EDUARDO GOMES OLIVEIRA GRUCHOSKI","Santino Pastore","Eduardo Gruchoski",""],["14","18:15","4","011","ESPECIAL MASC","16 AVOS DE FINAL","JULIANO NARDI","JULIO RODRIGUES","","Julio Rodrigues"],["14","18:15","10","013","ESPECIAL MASC","16 AVOS DE FINAL","FABRÍCIO RAFAEL CARVALHO MARIN","ALLEX SAKATA","","Allex Sakata"],["14","18:15","11","014","ESPECIAL MASC","16 AVOS DE FINAL","MATHEUS ALBERTO RODRIGUEZ LESME","IGOR GAVAZZONI","","Igor Gavazzoni"],["14","18:20","5","018","ESPECIAL MASC","16 AVOS DE FINAL","FELIPE SUGUYAMA POLTRONIERI BORGES","MIGUEL BARBOSA","","Miguel Barbosa"],["14","18:30","16","014","SUB- 17 FEM","GRUPO B","NATALY MURDOCH","ISABELA DE OLIVEIRA","","Isabela de Oliveira"],["14","19:05","13","001","INICIANTE IDADE LIVRE FEM","GRUPO A","MARCIA TREIB","KAMILY ZANATTA","Márcia Treib",""],["14","19:35","13","004","INICIANTE IDADE LIVRE FEM","GRUPO A","MARCIA TREIB","ELIANA CÁCERES","Márcia Treib",""],["14","19:50","10","003","ESPECIAL FEM","SEMIFINAL","Vencedor Jogo 002","KAROLINE GOMES OLIVEIRA GRUCHOSKI","","Karoline Gruchoski"],["14","20:05","12","005","INICIANTE IDADE LIVRE FEM","GRUPO A","MARCIA TREIB","MARINA SCHÄFFER","Márcia Treib",""],["15","08:00","9","009","SUB- 13 MASC","GRUPO I","JOÃO GUILHERME TREIB","SAMUEL MATSUMOTO","João Guilherme Treib",""],["15","08:00","12","012","SUB- 13 MASC","GRUPO E","MIGUEL BARBOSA","VITOR DE QUADROS SANTOS","Miguel Barbosa",""],["15","08:00","15","015","SUB- 13 MASC","GRUPO H","MANSUR GIBRAHIM MAHMOUD JOMAA","GUILHERME DARTORA","","Guilherme Dartora"],["15","08:25","2","002","MASTER 40 MASC","GRUPO C","MICHEL MATSUMOTO","ANDRÉ LUIZ DE OLIVEIRA","","André Luiz de Oliveira"],["15","08:25","3","003","MASTER 40 MASC","GRUPO D","LEONARDO QUEIROGA RAMIREZ","JULIO RODRIGUES","","Julio Rodrigues"],["15","08:25","5","005","MASTER 40 MASC","GRUPO B","JANDI BARBOSA","CARLOS ALVARENGA","Jandi Barbosa",""],["15","08:25","6","001","ABSOLUTO A MASC","GRUPO C","NESTOR CHAVES","BENJAMÍN NÚÑEZ","Nestor Chaves",""],["15","08:25","7","002","ABSOLUTO A MASC","GRUPO B","IGOR GAVAZZONI","GUSTAVO NAKAMURA MIURA","Igor Gavazzoni",""],["15","08:25","9","004","ABSOLUTO A MASC","GRUPO D","ALLEX SAKATA","KATIA KAWAI","Allex Sakata",""],["15","08:25","10","001","SUB- 19 MASC","GRUPO A","SAÚL RIVEROS","VICTOR CORAÇA","","Victor Coraça"],["15","08:25","20","003","MASTER 50 MASC","GRUPO C","OSWALDO FAGUNDES","Víctor Garcete","Oswaldo Fagundes",""],["15","08:25","21","004","MASTER 50 MASC","GRUPO D","JORGE DANIEL ROLDÁN","JANDIR MOTTER","","Jandir Motter"],["15","08:50","2","018","SUB- 13 MASC","GRUPO I","JOÃO GUILHERME TREIB","SAMUEL HENRIQUE LOBATO BARBOSA","João Guilherme Treib",""],["15","08:50","3","019","SUB- 13 MASC","GRUPO H","FABRICIO GÓMEZ","GUILHERME DARTORA","","Guilherme Dartora"],["15","08:50","12","028","SUB- 13 MASC","GRUPO E","MATÍAS ALVARENGA","MIGUEL BARBOSA","","Miguel Barbosa"],["15","08:50","19","003","SUB- 19 MASC","GRUPO C","MATHEUS NASCIMENTO","JOSÉ FERNANDEZ","Matheus Nascimento",""],["15","09:15","14","012","MASTER 40 MASC","GRUPO B","EDGAR FRANCISCO ABADIE JUNIOR","JANDI BARBOSA","","Jandi Barbosa"],["15","09:15","15","001","SUB-9 MASC","GRUPO C","GABRIEL GODOY NARDI","MATIAS BARBOSA","","Matias Barbosa"],["15","09:15","17","007","ABSOLUTO A MASC","GRUPO C","NESTOR CHAVES","WESLEY VICTOR FERREIRA DA SILVA","Nestor Chaves",""],["15","09:15","18","008","ABSOLUTO A MASC","GRUPO A","EDUARDO GOMES OLIVEIRA GRUCHOSKI","JULIO RODRIGUES","Eduardo Gruchoski","Julio Rodrigues"],["15","09:15","19","005","MASTER 50 MASC","GRUPO D","OLIDES MILLEZI JUNIOR","JANDIR MOTTER","","Jandir Motter"],["15","09:15","20","006","MASTER 50 MASC","GRUPO C","ARIEL MELGAREJO","OSWALDO FAGUNDES","","Oswaldo Fagundes"],["15","09:40","5","037","SUB- 13 MASC","GRUPO E","LUCAS HIDEKI MAEDA","MIGUEL BARBOSA","","Miguel Barbosa"],["15","09:40","10","041","SUB- 13 MASC","GRUPO I","JOÃO GUILHERME TREIB","BENJAMÍN RODAS","João Guilherme Treib",""],["15","09:40","16","047","SUB- 13 MASC","GRUPO H","GUILHERME DARTORA","EMANOEL SUKUO","Guilherme Dartora",""],["15","10:05","8","015","MASTER 40 MASC","GRUPO C","ANDRÉ LUIZ DE OLIVEIRA","SERGIO CÁCERES","André Luiz de Oliveira",""],["15","10:05","9","016","MASTER 40 MASC","GRUPO B","Oscar Gavilan","JANDI BARBOSA","","Jandi Barbosa"],["15","10:05","14","010","ABSOLUTO A MASC","GRUPO C","NESTOR CHAVES","FELIPE SUGUYAMA POLTRONIERI BORGES","Nestor Chaves",""],["15","10:05","15","011","ABSOLUTO A MASC","GRUPO A","EDUARDO GOMES OLIVEIRA GRUCHOSKI","VINÍCIUS DE LIMA ALBANO","Eduardo Gruchoski",""],["15","10:05","18","010","SUB- 19 MASC","GRUPO A","VICTOR CORAÇA","ANDRE LUIZ WELCOFF","Victor Coraça",""],["15","10:05","21","012","SUB- 19 MASC","GRUPO C","JOAQUÍN VERA Y ARAGÓN","MATHEUS NASCIMENTO","","Matheus Nascimento"],["15","10:30","8","004","ABSOLUTO D MASC","32 AVOS DE FINAL","DANIEL VINICIUS DE SOUZA MENEGASSI","RAFAEL FAGUNDES","","Rafael Fagundes"],["15","10:30","9","005","ABSOLUTO D MASC","32 AVOS DE FINAL","GUILHERME DARTORA","MIGUEL YUUKI REFUNDINI","Guilherme Dartora",""],["15","10:30","12","007","SUB-9 MASC","GRUPO C","MATIAS BARBOSA","HEITOR BLANCO DE MELLO","Matias Barbosa",""],["15","10:30","16","008","ABSOLUTO D MASC","32 AVOS DE FINAL","DIEGO FERNANDES","JANDIR MOTTER","","Jandir Motter"],["15","10:55","4","021","MASTER 40 MASC","GRUPO D","JULIO RODRIGUES","JULIANO NARDI","Julio Rodrigues",""],["15","10:55","9","014","ABSOLUTO D MASC","32 AVOS DE FINAL","MATEUS KLIEMANN","ARIEL MELGAREJO","Mateus Kliemann",""],["15","10:55","14","018","ABSOLUTO D MASC","32 AVOS DE FINAL","ANDRÉ LUIZ DE OLIVEIRA","JOSÉ FRANCISCO SALES FILHO","André Luiz de Oliveira",""],["15","10:55","22","015","ABSOLUTO A MASC","GRUPO B","PAULO HENRIQUE ZIELKE","IGOR GAVAZZONI","","Igor Gavazzoni"],["15","11:20","3","013","SUB- 19 MASC","GRUPO C","DANIEL VINICIUS DE SOUZA MENEGASSI","MATHEUS NASCIMENTO","","Matheus Nascimento"],["15","11:45","3","031","ABSOLUTO D MASC","32 AVOS DE FINAL","JANDI BARBOSA","MICHEL MATSUMOTO","Jandi Barbosa",""],["15","11:45","8","023","MASTER 40 MASC","GRUPO D","Santiago Bañuelos","JULIO RODRIGUES","","Julio Rodrigues"],["15","11:45","12","016","ABSOLUTO A MASC","GRUPO B","FABRÍCIO RAFAEL CARVALHO MARIN","IGOR GAVAZZONI","","Igor Gavazzoni"],["15","11:45","13","017","ABSOLUTO A MASC","GRUPO D","MARCELO MASSAHIKO KUMAGAI","ALLEX SAKATA","","Allex Sakata"],["15","13:00","6","029","MASTER 40 MASC","GRUPO C","Jorge Dure","ANDRÉ LUIZ DE OLIVEIRA","","André Luiz de Oliveira"],["15","13:00","11","019","ABSOLUTO A MASC","GRUPO A","JULIO RODRIGUES","DIONATHAN OLIVEIRA DA SILVA","Julio Rodrigues",""],["15","13:00","16","013","MASTER 50 MASC","GRUPO C","SILVIO FIGUEREDO","OSWALDO FAGUNDES","","Oswaldo Fagundes"],["15","13:25","3","018","SUB- 19 MASC","GRUPO A","Santino Pastore","VICTOR CORAÇA","","Victor Coraça"],["15","13:25","10","013","SUB-9 MASC","GRUPO C","AGUSTÍN TORRES","MATIAS BARBOSA","","Matias Barbosa"],["15","13:50","6","001","ABSOLUTO C FEM","GRUPO A","ISABELA DE OLIVEIRA","IOLANDA GUIMARÃES LOBATO","Isabela de Oliveira",""],["15","13:50","8","022","ABSOLUTO A MASC","GRUPO A","VINÍCIUS DE LIMA ALBANO","JULIO RODRIGUES","","Julio Rodrigues"],["15","13:50","9","023","ABSOLUTO A MASC","GRUPO D","EGON LOVATO","ALLEX SAKATA","","Allex Sakata"],["15","13:50","10","024","ABSOLUTO A MASC","GRUPO A","EDUARDO GOMES OLIVEIRA GRUCHOSKI","DIONATHAN OLIVEIRA DA SILVA","Eduardo Gruchoski",""],["15","13:50","12","015","MASTER 50 MASC","GRUPO D","JANDIR MOTTER","SERGIO CÁCERES","Jandir Motter",""],["15","13:50","22","003","ABSOLUTO C FEM","GRUPO B","FUJIE KIMURA","ELIANA CÁCERES","Fujie Kimura",""],["15","14:15","15","001","SUB- 19 FEM","GRUPO A","KAROLINE GOMES OLIVEIRA GRUCHOSKI","ÁMBAR FERNÁNDEZ","Karoline Gruchoski",""],["15","14:25","9","004","ABSOLUTO C FEM","GRUPO B","SAMARA ALINE RODRIGUES LESME","FUJIE KIMURA","","Fujie Kimura"],["15","14:25","11","006","ABSOLUTO C FEM","GRUPO A","RUTH ZAMA","IOLANDA GUIMARÃES LOBATO","Ruth Zama",""],["15","15:05","6","007","ABSOLUTO C FEM","GRUPO A","ISABELA DE OLIVEIRA","RUTH ZAMA","Isabela de Oliveira","Ruth Zama"],["15","15:40","2","002","MASTER 50 FEM","GRUPO A","RUTH ZAMA","FUJIE KIMURA","Ruth Zama","Fujie Kimura"],["15","15:40","12","005","SUB- 19 FEM","GRUPO A","KAROLINE GOMES OLIVEIRA GRUCHOSKI","LETICIA YUNA NOGUTI","Karoline Gruchoski",""],["15","16:15","3","003","MASTER 50 FEM","GRUPO A","HILDA YAEKO ENDO","RUTH ZAMA","","Ruth Zama"],["15","16:15","9","009","ABSOLUTO C FEM","GRUPO B","LETICIA YUNA NOGUTI","FUJIE KIMURA","","Fujie Kimura"],["15","16:50","2","004","MASTER 50 FEM","GRUPO A","IOLANDA GUIMARÃES LOBATO","FUJIE KIMURA","","Fujie Kimura"],["15","17:25","1","005","MASTER 50 FEM","GRUPO A","IOLANDA GUIMARÃES LOBATO","RUTH ZAMA","","Ruth Zama"],["15","17:25","2","006","MASTER 50 FEM","GRUPO A","FUJIE KIMURA","HILDA YAEKO ENDO","Fujie Kimura",""],
+["14","08:50","2","001","SUB-9 MASC EQUIPE","QUARTAS DE FINAL","ATEMEL/ACEL LONDRINA","ATMFOZ HEITOR E JOAQUIM","ATEMEL/ACEL LONDRINA",""],
+["14","08:00","11","001","SUB- 13 MASC EQUIPE","OITAVAS DE FINAL","FEDERACIÓN PARAGUAYA DE TENIS DE MESA 3","MATCH POINT","","MATCH POINT"],
+["14","09:40","6","005","ABSOLUTO A MASC EQUIPE","QUARTAS DE FINAL","Vencedor Jogo 002","ATEMEL/ACEL LONDRINA","","ATEMEL/ACEL LONDRINA"],
+["14","08:50","9","001","SUB-11 FEM EQUIPE","SEMIFINAL","AMG GUAÍRA","TOLEDO","","TOLEDO"],
+["14","15:25","21","004","SUB- 15 MASC","32 AVOS DE FINAL","VICTOR MASSAYUKI ITO","EMANUEL ADRIANO TESCHE","","Emanuel Adriano Tesche"],
+["14","18:15","12","015","ESPECIAL MASC","16 AVOS DE FINAL","EMANUEL ADRIANO TESCHE","PEDRO EGASHIRA","Emanuel Adriano Tesche",""],
+["15","08:00","7","007","SUB- 13 MASC","GRUPO G","FABIO GOMEZ","EMANUEL ADRIANO TESCHE","","Emanuel Adriano Tesche"],
+["15","08:50","14","030","SUB- 13 MASC","GRUPO G","EMANUEL ADRIANO TESCHE","MOHAMMAD KORYANI","Emanuel Adriano Tesche",""],
+["15","09:40","15","046","SUB- 13 MASC","GRUPO G","BENJAMIM KIN REFUNDINI","EMANUEL ADRIANO TESCHE","","Emanuel Adriano Tesche"],
+["14","08:50","16","002","SUB- 19 FEM EQUIPE","SEMIFINAL","ASSOCIAÇÃO DE TENIS DE MESA DE FOZ DO IGUAÇU KAROL E NIHAN","AMG GUAÍRA","ASSOCIAÇÃO DE TENIS DE MESA DE FOZ DO IGUAÇU KAROL E NIHAN",""]];
+/* Quem joga em cada equipe, conforme as equipes cadastradas no site */
+var TM={
+ "Equipe AMC 2|ABSOLUTO A MASC EQUIPE":["Victor Coraça","Allex Sakata"],
+ "Equipe AMC 1|ABSOLUTO D MASC EQUIPE":["Matheus Nascimento","Rafael Fagundes"],
+ "Equipe AMC 3|ABSOLUTO A MASC EQUIPE":["Igor Gavazzoni","Mateus Kliemann"],
+ "Equipe AMC|MASTER 40 MASC EQUIPE":["Julio Rodrigues","Jandi Barbosa"],
+ "Equipe AMC 1|ABSOLUTO A MASC EQUIPE":["Miguel Barbosa","Nestor Chaves"],
+ "Equipe AMC|MASTER 50 MASC EQUIPE":["Jandir Motter","Oswaldo Fagundes"],
+ "Equipe AMC|ABSOLUTO C FEM EQUIPE":["Fujie Kimura","Márcia Treib"],
+ "ATEMEL/ACEL LONDRINA|SUB-9 MASC EQUIPE":["Matias Barbosa"],
+ "MATCH POINT|SUB- 13 MASC EQUIPE":["Emanuel Adriano Tesche"],
+ "ATEMEL/ACEL LONDRINA|ABSOLUTO A MASC EQUIPE":["Eduardo Gruchoski"],
+ "TOLEDO|SUB-11 FEM EQUIPE":["Letícia Rufati"],
+ "ASSOCIAÇÃO DE TENIS DE MESA DE FOZ DO IGUAÇU KAROL E NIHAN|SUB- 19 FEM EQUIPE":["Karoline Gruchoski"],
+ "Equipe AMC|ABSOLUTO D MASC EQUIPE":["André Luiz de Oliveira","Isabela de Oliveira"],
+ "Equipe AMC|SUB- 15 MASC EQUIPE":["João Pavilaki","Miguel Scussiatto"]
+};
+var DAYS={"14":"Sábado, 14/11","15":"Domingo, 15/11"};
+var TEAMS=["Equipe AMC","Equipe AMC 1","Equipe AMC 2","Equipe AMC 3"];
+var KEY="agenda-atleta-v2", DONEKEY="agenda-atleta-done-v2";
+
+function load(k){try{return JSON.parse(localStorage.getItem(k))}catch(e){return null}}
+function save(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}
+function norm(s){return String(s).normalize("NFD").replace(/[̀-ͯ]/g,"").toLowerCase().trim()}
+function esc(s){return String(s).replace(/[&<>"']/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]})}
+function mins(t){var p=String(t).split(":");return (+p[0])*60+(+p[1]||0)}
+function title(s){return s.toLowerCase().replace(/(^|[\s\-\/(])(\S)/g,function(m,a,b){return a+b.toUpperCase()}).replace(/\b(De|Da|Do|Dos|Das|E|Y)\b/g,function(x){return x.toLowerCase()})}
+function pretty(s){return /^[A-ZÀ-Ý0-9 .\-\/·ªº'’,()]+$/.test(s)&&s.length>3?title(s).replace(/\bAmc\b/g,"AMC").replace(/\bAtemel\/Acel\b/g,"Atemel/Acel").replace(/\bAacc\b/g,"AACC").replace(/\bCtmpg\b/g,"CTMPG").replace(/\bAmg\b/g,"AMG"):s}
+
+function alias(n){return !n?null:(n==="Fujie Kimura"?"Fujie Kimura (Luzia)":n)}
+var imported=load(KEY), isImported=!!imported;
+var data;
+if(imported){
+  data={event:"Agenda do Atleta",sub:"",athletes:imported.athletes,matches:imported.matches.map(function(m){return m})};
+}else{
+  var matches=ROWS.map(function(r){return{id:r[0]+r[1]+r[2]+r[3]+r[4],d:r[0],t:r[1],c:"Mesa "+r[2],mesa:r[2],j:r[3],cat:r[4],r:r[5],a:r[6],b:r[7],ma:alias(r[8]),mb:alias(r[9]),mem:(TM[(r[8]||r[9])+"|"+r[4]]||[]).map(alias),sc:r[10]||"",st:r[11]||""}});
+  var names={};matches.forEach(function(m){[m.ma,m.mb].forEach(function(x){if(x&&(TEAMS.indexOf(x)>-1||!/^[A-ZÀ-Ý0-9 \/\-ÁÉÍÓÚÇ]+$/.test(x)))names[x]=1});m.mem.forEach(function(x){names[x]=1})});
+  var ind=Object.keys(names).filter(function(n){return TEAMS.indexOf(n)<0}).sort(function(a,b){return a.localeCompare(b,"pt")});
+  var tm=TEAMS.filter(function(n){return names[n]});
+  data={event:"14ª Copa Antônio Kimura",sub:"Toledo-PR · programação publicada em 12/11 às 15:31",athletes:ind.concat(tm),matches:matches};
+}
+var done=load(DONEKEY)||{};
+var state={tab:"mine",me:"ALL",q:"",day:"",open:false};
+
+function who(side){for(var i=0;i<data.athletes.length;i++){if(norm(side).indexOf(norm(data.athletes[i]))>-1)return data.athletes[i]}return null}
+data.matches.forEach(function(m,i){
+  if(m.ma===undefined){m.ma=who(m.a);m.mb=who(m.b)}
+  if(m.id===undefined)m.id="i"+i;
+  if(m.d===undefined)m.d="14";
+  if(m.mesa===undefined)m.mesa=String(m.c).replace(/\D+/g,"")||m.c;
+});
+function isDone(m){return !!done[m.id]||m.st==="Concluído"}
+function countdown(m){
+  var h=String(m.t).split(":"), t=new Date(2026,10,+m.d,+h[0],+h[1]), diff=Math.round((t-new Date())/60000);
+  if(diff>180||diff<-45)return "";
+  if(diff>0)return "Começa em "+(diff>=60?Math.floor(diff/60)+" h "+(diff%60?diff%60+" min":""):diff+" min");
+  return "Deve estar começando agora. Vá para a mesa.";
+}
+function lineHtml(m){
+  var us=m.mem&&m.mem.length?m.mem.join(" e "):null, txt;
+  if(m.ma&&m.mb&&!us)txt=pretty(m.a)+" x "+pretty(m.b);
+  else{var mine=m.ma||m.mb,opp=m.ma&&!m.mb?m.b:m.a;if(m.mb&&!m.ma)opp=m.a;if(m.ma&&!m.mb)opp=m.b;txt=(us||mine)+" contra "+(isTbd(opp)?"a definir":pretty(opp))}
+  return '<div class="slot'+(isDone(m)?' done':'')+'"><b>'+esc(m.c)+'</b><span>'+esc(txt)+'<small>'+esc(pretty(m.cat))+' · '+esc(title(m.r))+(m.sc?' · '+esc(m.sc):'')+'</small></span></div>';
+}
+function hasAthlete(m,n){return m.ma===n||m.mb===n||(m.mem&&m.mem.indexOf(n)>-1)}
+function mineAll(){return data.matches.filter(function(m){return m.ma||m.mb})}
+function mineFor(n){return n==="ALL"?mineAll():data.matches.filter(function(m){return hasAthlete(m,n)})}
+function key(m){return m.d+" "+m.t}
+function sorted(a){return a.slice().sort(function(x,y){return (+x.d-+y.d)||(mins(x.t)-mins(y.t))||(+x.mesa-+y.mesa)||0})}
+function short(n){var p=n.split(" ");return p.length>2&&p[0]!=="Equipe"?p[0]+" "+p[p.length-1]:n}
+function isTbd(s){return /^Vencedor/i.test(s)}
+
+function sideHtml(txt,mine){var t=isTbd(txt);return '<div class="side'+(mine?' me':'')+(t?' tbd':'')+'">'+esc(t?txt.replace("Vencedor","Vencedor do")+" (a definir)":pretty(txt))+'</div>'}
+function cardHtml(m){
+  var d=isDone(m);
+  return '<article class="card'+(d?' done':'')+'"><div class="time"><b>'+esc(m.t)+'</b><span>'+esc(m.c)+'</span></div>'+
+  '<div class="body"><div class="tags"><span class="tag court">'+esc(m.c)+'</span><span class="tag">'+esc(pretty(m.cat))+'</span><span class="tag">'+esc(title(m.r))+'</span></div>'+
+  (m.mem&&m.mem.length?'<div class="mem">Do clube: '+esc(m.mem.join(" e "))+'</div>':'')+
+  sideHtml(m.a,m.ma)+'<div class="x">contra</div>'+sideHtml(m.b,m.mb)+
+  (m.sc?'<div class="mem">Placar: '+esc(m.sc)+'</div>':'')+
+  '<button class="finish" type="button" data-done="'+esc(m.id)+'">'+(d?'Jogo concluído':'Marcar como concluído')+'</button></div></article>';
+}
+
+function renderWho(){
+  var h='<button class="chip" type="button" aria-pressed="'+(state.me==="ALL")+'" data-me="ALL">Todo o clube<small>'+mineAll().length+'</small></button>';
+  data.athletes.forEach(function(n){
+    h+='<button class="chip" type="button" aria-pressed="'+(state.me===n)+'" data-me="'+esc(n)+'">'+esc(short(n))+'<small>'+mineFor(n).length+'</small></button>';
+  });
+  document.getElementById("who").innerHTML=h;
+}
+
+function viewMine(){
+  var list=sorted(mineFor(state.me));
+  if(!list.length)return '<div class="empty">Nenhum jogo encontrado para '+(state.me==="ALL"?'o clube':esc(state.me))+'.</div>';
+  var h='', pending=list.filter(function(m){return !isDone(m)}), nx=pending[0];
+  if(nx){
+    var mine=nx.ma||nx.mb, opp=nx.ma&&!nx.mb?nx.b:(nx.mb&&!nx.ma?nx.a:nx.b);
+    h+='<section class="next" aria-label="Próximo jogo"><div class="label">Próximo jogo'+(state.me==="ALL"?' do clube':'')+' · '+esc(DAYS[nx.d]||nx.d)+'</div>'+
+    '<div class="big">'+esc(nx.t)+'</div><div class="where">'+esc(nx.c)+'</div>'+
+    '<div class="vs"><b>'+esc(short(mine))+'</b>'+(nx.mem&&nx.mem.length?' ('+esc(nx.mem.join(" e "))+')':'')+' contra '+esc(isTbd(opp)?"a definir ("+opp+")":pretty(opp))+'</div>'+
+    '<div class="meta">'+esc(pretty(nx.cat))+' · '+esc(title(nx.r))+'</div>'+
+    (countdown(nx)?'<div class="count">'+esc(countdown(nx))+'</div>':'')+
+    '<div class="row"><button class="finish on-dark" type="button" data-done="'+esc(nx.id)+'">Marcar como concluído</button></div></section>';
+  } else {
+    h+='<div class="empty">Todos os jogos concluídos. Bom trabalho!</div>';
+  }
+  var prev=null, lastDay=null;
+  list.forEach(function(m){
+    if(m.d!==lastDay){h+='<div class="day">'+esc(DAYS[m.d]||m.d)+'</div>';lastDay=m.d;prev=null}
+    if(state.me!=="ALL"&&prev){
+      var g=mins(m.t)-mins(prev.t);
+      var txt=g>=60?Math.floor(g/60)+' h'+(g%60?' '+(g%60)+' min':''):g+' min';
+      h+='<p class="gap'+(g<=45?' tight':'')+'"><b>Intervalo de '+txt+'</b> '+(g<=45?'(prepare-se logo)':'')+'</p>';
+    }
+    h+=cardHtml(m); prev=m;
+  });
+  h+='<p class="note">Jogos com "a definir" aparecem depois que o adversário é decidido. Toque em "Ver ao vivo no site" para conferir mesa e horário atualizados.</p>';
+  return h;
+}
+
+function viewAll(){
+  var h='<div class="tools"><input type="search" id="q" placeholder="Buscar atleta, categoria ou fase" value="'+esc(state.q)+'" aria-label="Buscar">'+
+  '<div class="chips" style="margin-right:0"><button class="chip" type="button" data-day="" aria-pressed="'+(state.day==="")+'">Os dois dias</button>'+
+  Object.keys(DAYS).map(function(k){return '<button class="chip" type="button" data-day="'+k+'" aria-pressed="'+(state.day===k)+'">'+esc(DAYS[k])+'</button>'}).join("")+
+  '</div></div>';
+  var q=norm(state.q);
+  var list=sorted(mineAll()).filter(function(m){
+    if(state.day&&m.d!==state.day)return false;
+    return !q||norm([m.a,m.b,m.cat,m.r,m.c].join(" ")).indexOf(q)>-1;
+  });
+  h+= list.length? '<div style="display:grid;gap:12px">'+list.map(cardHtml).join("")+'</div>' : '<div class="empty">Nada encontrado para essa busca.</div>';
+  return h;
+}
+
+function viewTime(){
+  var h='<div class="chips" style="margin-right:0"><button class="chip" type="button" data-day="" aria-pressed="'+(state.day==="")+'">Os dois dias</button>'+
+  Object.keys(DAYS).map(function(k){return '<button class="chip" type="button" data-day="'+k+'" aria-pressed="'+(state.day===k)+'">'+esc(DAYS[k])+'</button>'}).join("")+'</div>';
+  var list=sorted(mineAll()).filter(function(m){return !state.day||m.d===state.day}), last="";
+  list.forEach(function(m){
+    var k=m.d+" "+m.t;
+    if(k!==last){h+=(last?'</div>':'')+'<div class="group"><div class="gh"><b>'+esc(m.t)+'</b><span>'+esc(DAYS[m.d]||m.d)+'</span></div>';last=k}
+    h+=lineHtml(m);
+  });
+  return h+(last?'</div>':'')+'<p class="note">Todos os jogos do clube, agrupados por horário. Útil para técnicos e pais.</p>';
+}
+
+function viewClub(){
+  return data.athletes.map(function(n){
+    var l=sorted(mineFor(n)), first=l[0];
+    return '<button class="ath" type="button" data-pick="'+esc(n)+'"><span><strong>'+esc(n)+'</strong><small>'+(first?'Primeiro jogo: '+esc((DAYS[first.d]||first.d).split(",")[0])+' às '+esc(first.t)+' · '+esc(first.c):'Sem jogos na lista')+'</small></span><span class="n">'+l.length+'</span></button>';
+  }).join("");
+}
+
+function viewImport(){
+  return '<div class="sheet"><div class="label">Carregar listas</div>'+
+  '<p>Use só se quiser montar outra agenda. A programação oficial já vem carregada.</p>'+
+  '<textarea id="impA" placeholder="Ana Beatriz Souza&#10;Carlos Eduardo Lima" aria-label="Lista de atletas"></textarea>'+
+  '<p>Jogos, um por linha, campos separados por <code>;</code> na ordem: horário; mesa; categoria; fase; atleta A x atleta B</p>'+
+  '<textarea id="impM" placeholder="08:30; Mesa 1; Sub-15 Feminino; Oitavas; Ana Souza x Larissa Prado" aria-label="Lista de jogos"></textarea>'+
+  '<div class="row"><button class="primary" type="button" id="doImport">Montar agenda</button>'+(isImported?'<button class="ghost" type="button" id="doReset">Voltar à programação oficial</button>':'')+'</div>'+
+  '<div class="msg" id="impMsg" role="status"></div></div>';
+}
+
+function parse(){
+  var A=document.getElementById("impA").value.split(/\n/).map(function(s){return s.trim()}).filter(Boolean);
+  var M=[];
+  document.getElementById("impM").value.split(/\n/).forEach(function(line){
+    line=line.trim(); if(!line)return;
+    var p=line.split(/\s*[;|\t]\s*/);
+    var vs=(p[p.length-1]||"").split(/\s+x\s+|\s+vs\.?\s+/i);
+    if(p.length<5||vs.length<2||!/^\d{1,2}[:h]\d{2}$/.test(p[0]))return;
+    M.push({t:p[0].replace("h",":").replace(/^(\d):/,"0$1:"),c:p[1],cat:p[2],r:p[3],a:vs[0].trim(),b:vs[1].trim()});
+  });
+  return {A:A,M:M};
+}
+
+function render(){
+  document.getElementById("title").textContent=data.event;
+  document.getElementById("sub").textContent=data.sub;
+  renderWho();
+  document.querySelectorAll("nav button").forEach(function(b){b.setAttribute("aria-selected",String(!state.open&&b.dataset.tab===state.tab))});
+  document.querySelector(".who").hidden=state.open||state.tab!=="mine";
+  document.getElementById("main").innerHTML= state.open?viewImport(): state.tab==="mine"?viewMine(): state.tab==="time"?viewTime(): state.tab==="all"?viewAll():viewClub();
+}
+setInterval(function(){if(!state.open&&state.tab==="mine")render()},60000);
+
+document.addEventListener("click",function(e){
+  var t=e.target.closest("button"); if(!t)return;
+  if(t.dataset.tab){state.tab=t.dataset.tab;state.open=false;render();window.scrollTo(0,0)}
+  else if(t.dataset.me!==undefined){state.me=t.dataset.me;render()}
+  else if(t.dataset.done!==undefined){var id=t.dataset.done;if(done[id])delete done[id];else done[id]=1;save(DONEKEY,done);render()}
+  else if(t.dataset.day!==undefined){state.day=t.dataset.day;render()}
+  else if(t.dataset.pick){state.me=t.dataset.pick;state.tab="mine";render();window.scrollTo(0,0)}
+  else if(t.id==="btnImport"){state.open=!state.open;render()}
+  else if(t.id==="doReset"){try{localStorage.removeItem(KEY)}catch(x){}location.reload()}
+  else if(t.id==="doImport"){
+    var r=parse(), msg=document.getElementById("impMsg");
+    if(!r.A.length||!r.M.length){msg.className="msg err";msg.textContent="Preencha as duas listas. Cada linha de jogo precisa ter 5 campos e o horário no formato 08:30.";return}
+    save(KEY,{athletes:r.A,matches:r.M});
+    location.reload();
+  }
+});
+document.addEventListener("input",function(e){
+  if(e.target.id==="q"){state.q=e.target.value;var pos=e.target.selectionStart;render();var q=document.getElementById("q");q.focus();q.setSelectionRange(pos,pos)}
+});
+render();
+})();
+</script>
+
+</body></html>
