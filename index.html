@@ -1,22 +1,22 @@
-<!doctype html><html><head><meta charset="utf-8"><title>Agenda do Atleta - Copa Kimura</title><link rel="icon" type="image/svg+xml" href="icon.svg"><link rel="apple-touch-icon" href="apple-touch-icon.png"><link rel="manifest" href="manifest.json"><meta name="theme-color" content="#c8102e"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="Agenda Kimura"><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<!doctype html><html><head><meta charset="utf-8"><title>Agenda do Atleta - Copa Kimura</title><link rel="icon" type="image/svg+xml" href="icon.svg"><link rel="apple-touch-icon" href="apple-touch-icon.png"><link rel="manifest" href="manifest.json"><meta name="theme-color" content="#0d0505"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="Agenda Kimura"><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
 <title>Agenda do Atleta</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Barlow:wght@400;500;600&display=swap">
 <style>
 /* Layout: app de celular em coluna única. Cabeçalho com seletor de atleta, abas embaixo, cartões de jogo com horário grande à esquerda (como placar de ginásio). */
 :root{
-  --bg:#f8f2f1; --surface:#ffffff; --ink:#140808; --muted:#6b5757; --line:#e8dada; --band:#c8102e; --gold:#ffc72c;
+  --bg:#f8f2f1; --surface:#ffffff; --ink:#140808; --muted:#6b5757; --line:#e8dada; --band:#0d0505; --gold:#ffc72c;
   --accent:#c8102e; --accent-ink:#ffffff; --accent-soft:#fde6e8;
   --ok:#17803d; --ok-soft:#dff3e5; --warn:#a15c00; --warn-soft:#fbefd2;
   --display:"Barlow Condensed","Arial Narrow",system-ui,sans-serif;
   --body:"Barlow",system-ui,-apple-system,"Segoe UI",sans-serif;
 }
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
-  --bg:#120707; --surface:#1f0e0e; --ink:#f8eeee; --muted:#bba4a4; --line:#3b2121; --band:#c8102e; --gold:#ffd24d;
+  --bg:#120707; --surface:#1f0e0e; --ink:#f8eeee; --muted:#bba4a4; --line:#3b2121; --band:#000000; --gold:#ffd24d;
   --accent:#ff5566; --accent-ink:#1a0306; --accent-soft:#3a1519;
   --ok:#5fd18a; --ok-soft:#14301f; --warn:#f2c35c; --warn-soft:#352a10; color-scheme:dark}}
 :root[data-theme="dark"]{
-  --bg:#120707; --surface:#1f0e0e; --ink:#f8eeee; --muted:#bba4a4; --line:#3b2121; --band:#c8102e; --gold:#ffd24d;
+  --bg:#120707; --surface:#1f0e0e; --ink:#f8eeee; --muted:#bba4a4; --line:#3b2121; --band:#000000; --gold:#ffd24d;
   --accent:#ff5566; --accent-ink:#1a0306; --accent-soft:#3a1519;
   --ok:#5fd18a; --ok-soft:#14301f; --warn:#f2c35c; --warn-soft:#352a10; color-scheme:dark}
 *{box-sizing:border-box}
@@ -110,7 +110,7 @@ nav button[aria-selected="true"]{background:var(--ink);color:var(--bg)}
 .install .close{margin-top:10px}
 
 /* Cores da AMC: vermelho predominante, preto, toques de amarelo e branco */
-header{background:var(--band);color:#fff;margin:14px -16px 0;padding:18px 16px 14px;border-radius:16px;border-bottom:5px solid var(--gold)}
+header{background:var(--band);color:#fff;margin:14px -16px 0;padding:18px 16px 14px;border-radius:16px;border-bottom:5px solid var(--accent)}
 header h1{color:#fff}
 header .chip{color:var(--ink)}
 header .chip[aria-pressed="true"]{color:#fff}
@@ -118,20 +118,20 @@ header .sub{color:#fff;opacity:.88}
 header .label{color:#fff;opacity:.85}
 header .live{background:var(--gold);color:#140808;border-color:var(--gold)}
 header .ghost:not(.live){color:#fff;border-color:rgba(255,255,255,.6)}
-.chip[aria-pressed="true"]{background:#0d0505;color:#fff;border-color:#0d0505}
+.chip[aria-pressed="true"]{background:#c8102e;color:#fff;border-color:#c8102e}
 .next{background:var(--band);color:#fff}
 .next .label,.next .count{color:var(--gold)}
 .next .meta{opacity:.9}
 .next .finish.on-dark{color:#fff;border-color:rgba(255,255,255,.6)}
 .day{color:var(--ink)}
-.day::after{background:var(--band);height:2px}
-.card{border-left:4px solid var(--band)}
-.gh{border-left:4px solid var(--band)}
-nav{border-top:3px solid var(--band)}
+.day::after{background:var(--accent);height:2px}
+.card{border-left:4px solid var(--accent)}
+.gh{border-left:4px solid var(--accent)}
+nav{border-top:3px solid var(--accent)}
 nav button[aria-selected="true"]{background:var(--band);color:#fff}
-.install{background:#0d0505;color:#fff;border-color:var(--gold)}
+.install{background:#c8102e;color:#fff;border-color:var(--gold)}
 .install summary,.install h2,.install ol{color:#fff}
-.install summary{color:var(--gold)}
+.install summary{color:#fff}
 .install .ghost{color:#fff;border-color:rgba(255,255,255,.5)}
 </style>
 <div class="wrap">
