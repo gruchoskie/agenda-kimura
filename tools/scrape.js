@@ -20,5 +20,25 @@ for(let page=1;page<=30;page++){
   if(!(await next.isEnabled().catch(()=>false)))break;
   await next.click();await p.waitForTimeout(800);
 }
+// Placares: só as chaves de equipe publicam o resultado (X × Y)
+const teamCats=[...new Set(games.filter(g=>g.cat.endsWith(' EQUIPE')).map(g=>g.cat.replace(/ EQUIPE$/,'')))];
+const scores={};
+for(const base of teamCats){
+  try{
+    await p.goto('https://geradorjogos.com.br/competicoes/8abtg1zl',{waitUntil:'networkidle',timeout:60000});
+    await p.getByRole('button',{name:base,exact:true}).first().click({timeout:8000});
+    await p.waitForTimeout(2500);
+    const L=(await p.evaluate(()=>document.body.innerText)).split('\n').map(x=>x.trim()).filter(Boolean);
+    for(let i=0;i<L.length;i++){
+      const m=L[i].match(/^Jogo (\d+) · Mesa/);if(!m)continue;
+      for(let k=i+1;k<Math.min(i+7,L.length);k++){
+        if(/^Jogo \d+ ·/.test(L[k]))break;
+        if(/^\d+ × \d+$/.test(L[k])){const sc=L[k].split(' × ').map(Number);scores[base+' EQUIPE|'+m[1]]={a:L[i+1],b:L[k+1],sa:sc[0],sb:sc[1]};break}
+      }
+    }
+  }catch(e){}
+}
+games.forEach(g=>{const v=scores[g.cat+'|'+g.j];if(!v||g.status==='Agendado')return;
+  if(v.a===g.a&&v.b===g.b)g.sc=v.sa+' × '+v.sb;else if(v.a===g.b&&v.b===g.a)g.sc=v.sb+' × '+v.sa});
 fs.writeFileSync(process.argv[2]||'games.json',JSON.stringify(games,null,1));
 console.log(games.length+' jogos');await b.close()})()

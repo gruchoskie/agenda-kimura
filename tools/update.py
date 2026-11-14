@@ -15,6 +15,20 @@ club={}
 for r in rows:
     if r[8]: club[norm(r[6])]=r[8]
     if r[9]: club[norm(r[7])]=r[9]
+def winner(x):
+    """'a' ou 'b' quando dá para saber quem venceu: pelo placar ou porque avançou no chaveamento."""
+    if x['status']=='Agendado': return ''
+    m=re.match(r'(\d+) × (\d+)$',x.get('sc',''))
+    if m and m.group(1)!=m.group(2): return 'a' if int(m.group(1))>int(m.group(2)) else 'b'
+    if x['fase'].startswith('GRUPO'): return ''
+    key=(x['d'],x['t'])
+    def later(n):
+        for y in G:
+            if y is x or y['cat']!=x['cat'] or (y['d'],y['t'])<=key or y['fase'].startswith('GRUPO'): continue
+            if n in (y['a'],y['b']): return True
+        return False
+    la,lb=later(x['a']),later(x['b'])
+    return 'a' if la and not lb else 'b' if lb and not la else ''
 out=[];seen=set()
 for x in G:
     la,lb=club.get(norm(x['a'])),club.get(norm(x['b']))
@@ -22,7 +36,7 @@ for x in G:
         la=la if la and (la+'|'+x['cat']) in TM else None
         lb=lb if lb and (lb+'|'+x['cat']) in TM else None
     if not(la or lb): continue
-    out.append([x['d'],x['t'],x['mesa'],x['j'],x['cat'],x['fase'],x['a'],x['b'],la or '',lb or ''])
+    out.append([x['d'],x['t'],x['mesa'],x['j'],x['cat'],x['fase'],x['a'],x['b'],la or '',lb or '',x.get('sc',''),'' if x['status']=='Agendado' else x['status'],winner(x)])
 old={(r[4],r[3]) for r in rows}; new={(r[4],r[3]) for r in out}
 print('linhas',len(out),'| novas',sorted(new-old),'| removidas',sorted(old-new))
 idx={(x['cat'],x['j']):x for x in G}

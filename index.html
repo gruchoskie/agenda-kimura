@@ -129,6 +129,9 @@ header .ghost:not(.live){color:#fff;border-color:rgba(255,255,255,.6)}
 .gh{border-left:4px solid var(--accent)}
 nav{border-top:3px solid var(--accent)}
 nav button[aria-selected="true"]{background:var(--band);color:#fff}
+.res{font-weight:600;font-size:14px;padding:6px 10px;border-radius:8px;background:var(--bg);color:var(--muted)}
+.res.win{background:var(--ok-soft);color:var(--ok)}
+.res.lose{background:var(--accent-soft);color:var(--accent)}
 .nx{border:1px dashed var(--accent);border-radius:10px;padding:8px 10px;font-size:13px;display:grid;gap:6px}
 .nxl{font:700 12px/1 var(--body);letter-spacing:.06em;text-transform:uppercase;color:var(--accent)}
 .nxr{overflow-wrap:anywhere}.nxr span{color:var(--muted)}
@@ -171,121 +174,121 @@ nav button[aria-selected="true"]{background:var(--band);color:#fff}
 (function(){
 /* Programação oficial publicada no site em 12/11/2026 15:31, filtrada para os atletas e equipes do clube.
    Colunas: dia, hora, mesa, nº do jogo, categoria, fase, participante A, participante B, atleta/equipe do clube em A, em B */
-var ROWS=[["14","08:00","3","003","ABSOLUTO D MASC EQUIPE","OITAVAS DE FINAL","SONIBRAM","ASSOCIAÇÃO DOS MESATENISTAS DE CASCAVEL - AMC 1","","Equipe AMC 1"],
-["14","08:00","11","001","SUB- 13 MASC EQUIPE","OITAVAS DE FINAL","FEDERACIÓN PARAGUAYA DE TENIS DE MESA 3","MATCH POINT","","MATCH POINT"],
-["14","08:00","13","003","ABSOLUTO A MASC EQUIPE","QUARTAS DE FINAL","ASSOCIAÇÃO DOS MESATENISTAS DE CASCAVEL - AMC 1","AMG GUAÍRA","Equipe AMC 1",""],
-["14","08:00","14","004","ABSOLUTO D MASC EQUIPE","QUARTAS DE FINAL","ASSOCIAÇÃO DOS MESATENISTAS DE CASCAVEL - AMC","TOLEDO","Equipe AMC",""],
-["14","08:00","18","002","SUB- 15 MASC EQUIPE","QUARTAS DE FINAL","ASSOCIAÇÃO DOS MESATENISTAS DE CASCAVEL - AMC","Club Lapacho","Equipe AMC",""],
-["14","08:00","19","004","ABSOLUTO A MASC EQUIPE","QUARTAS DE FINAL","ASSOCIAÇÃO DOS MESATENISTAS DE CASCAVEL - AMC 2","CTMPG","Equipe AMC 2",""],
-["14","08:50","2","001","SUB-9 MASC EQUIPE","QUARTAS DE FINAL","ATEMEL/ACEL LONDRINA","ATMFOZ HEITOR E JOAQUIM","ATEMEL/ACEL LONDRINA",""],
-["14","08:50","9","001","SUB-11 FEM EQUIPE","SEMIFINAL","AMG GUAÍRA","TOLEDO","","TOLEDO"],
-["14","08:50","16","002","SUB- 19 FEM EQUIPE","SEMIFINAL","ASSOCIAÇÃO DE TENIS DE MESA DE FOZ DO IGUAÇU KAROL E NIHAN","AMG GUAÍRA","ASSOCIAÇÃO DE TENIS DE MESA DE FOZ DO IGUAÇU KAROL E NIHAN",""],
-["14","08:50","20","002","MASTER 50 MASC EQUIPE","SEMIFINAL","ASSOCIAÇÃO DOS MESATENISTAS DE CASCAVEL - AMC","FEDERACIÓN PARAGUAYA DE TENIS DE MESA","Equipe AMC",""],
-["14","09:40","6","005","ABSOLUTO A MASC EQUIPE","QUARTAS DE FINAL","Vencedor Jogo 002","ATEMEL/ACEL LONDRINA","","ATEMEL/ACEL LONDRINA"],
-["14","09:40","7","006","ABSOLUTO A MASC EQUIPE","QUARTAS DE FINAL","Lapacho","ASSOCIAÇÃO DOS MESATENISTAS DE CASCAVEL - AMC 3","","Equipe AMC 3"],
-["14","10:30","15","002","MASTER 40 MASC EQUIPE","FINAL","ASSOCIAÇÃO DOS MESATENISTAS DE CASCAVEL - AMC","Vencedor Jogo 001","Equipe AMC",""],
-["14","10:30","17","002","ABSOLUTO C FEM EQUIPE","FINAL","ASSOCIAÇÃO DOS MESATENISTAS DE CASCAVEL - AMC","Vencedor Jogo 001","Equipe AMC",""],
-["14","13:15","10","002","SUB-11 FEM","GRUPO B","MANUELA AYUMI POLIANI DOI","LETICIA RUFATI","","Letícia Rufati"],
-["14","13:40","1","001","SUB- 17 MASC","GRUPO A","VICTOR CORAÇA","NICOLAS EMANUEL DE MELO PERALTA","Victor Coraça",""],
-["14","13:40","18","007","SUB- 17 MASC","GRUPO G","TAIKI MATSUNAGA","MIGUEL SCUSSIATTO","","Miguel Scussiatto"],
-["14","14:00","7","004","SUB-11 FEM","GRUPO B","AGUSTINA ELGUE","LETICIA RUFATI","","Letícia Rufati"],
-["14","14:20","15","014","SUB- 17 MASC","GRUPO I","Bruno Martínez","JOÃO PAVILAKI","","João Pavilaki"],
-["14","14:25","8","017","SUB- 17 MASC","GRUPO C","MATHEUS NASCIMENTO","DIOGO DE OLIVEIRA RIVILI","Matheus Nascimento",""],
-["14","15:10","12","024","SUB- 17 MASC","GRUPO I","IVÁN GIMENEZ","JOÃO PAVILAKI","","João Pavilaki"],
-["14","15:10","17","026","SUB- 17 MASC","GRUPO G","MIGUEL SCUSSIATTO","JOSÉ FERNANDEZ","Miguel Scussiatto",""],
-["14","15:15","4","029","SUB- 17 MASC","GRUPO C","JOÃO PAULO BOFFO GONÇALVES","MATHEUS NASCIMENTO","","Matheus Nascimento"],
-["14","15:15","6","031","SUB- 17 MASC","GRUPO A","VICTOR CORAÇA","GABRIEL ISSAMO EBUCHI DE PAULA","Victor Coraça",""],
-["14","15:25","21","004","SUB- 15 MASC","32 AVOS DE FINAL","VICTOR MASSAYUKI ITO","EMANUEL ADRIANO TESCHE","","Emanuel Adriano Tesche"],
-["14","15:30","14","006","SUB- 15 MASC","32 AVOS DE FINAL","MIGUEL BARBOSA","FABRICIO GÓMEZ","Miguel Barbosa",""],
-["14","15:35","12","009","SUB- 15 MASC","16 AVOS DE FINAL","FABRICIO DOLDAN","JOÃO GUILHERME TREIB","","João Guilherme Treib"],
-["14","16:00","7","039","SUB- 17 MASC","GRUPO G","ARTHUR VINÍCIUS LORSCHETTER MOKFA","MIGUEL SCUSSIATTO","","Miguel Scussiatto"],
-["14","16:05","1","040","SUB- 17 MASC","GRUPO I","JOÃO PAVILAKI","DAVI TAKAYAMA","João Pavilaki",""],
-["14","16:20","12","018","SUB- 15 MASC","16 AVOS DE FINAL","ARTHUR MIRANDA","PEDRO EGASHIRA","Arthur Miranda",""],
-["14","16:25","4","023","SUB- 15 MASC","16 AVOS DE FINAL","JOÃO PAVILAKI","Vencedor Jogo 007","João Pavilaki",""],
-["14","16:35","15","024","SUB- 15 MASC","16 AVOS DE FINAL","MIGUEL SCUSSIATTO","Vencedor Jogo 011","Miguel Scussiatto",""],
-["14","17:05","11","002","SUB- 17 FEM","GRUPO B","NATALY MURDOCH","KAROLINE GOMES OLIVEIRA GRUCHOSKI","","Karoline Gruchoski"],
-["14","17:35","1","001","ESPECIAL MASC","32 AVOS DE FINAL","LEONARDO SUPERTI","VICTOR CORAÇA","","Victor Coraça"],
-["14","17:45","16","008","SUB- 17 FEM","GRUPO B","ISABELA DE OLIVEIRA","KAROLINE GOMES OLIVEIRA GRUCHOSKI","Isabela de Oliveira","Karoline Gruchoski"],
-["14","18:00","6","005","ESPECIAL MASC","16 AVOS DE FINAL","EDUARDO GOMES OLIVEIRA GRUCHOSKI","Santino Pastore","Eduardo Gruchoski",""],
-["14","18:15","4","011","ESPECIAL MASC","16 AVOS DE FINAL","JULIANO NARDI","JULIO RODRIGUES","","Julio Rodrigues"],
-["14","18:15","10","013","ESPECIAL MASC","16 AVOS DE FINAL","FABRÍCIO RAFAEL CARVALHO MARIN","ALLEX SAKATA","","Allex Sakata"],
-["14","18:15","11","014","ESPECIAL MASC","16 AVOS DE FINAL","MATHEUS ALBERTO RODRIGUEZ LESME","IGOR GAVAZZONI","","Igor Gavazzoni"],
-["14","18:15","12","015","ESPECIAL MASC","16 AVOS DE FINAL","EMANUEL ADRIANO TESCHE","PEDRO EGASHIRA","Emanuel Adriano Tesche",""],
-["14","18:20","5","018","ESPECIAL MASC","16 AVOS DE FINAL","FELIPE SUGUYAMA POLTRONIERI BORGES","MIGUEL BARBOSA","","Miguel Barbosa"],
-["14","18:30","16","014","SUB- 17 FEM","GRUPO B","NATALY MURDOCH","ISABELA DE OLIVEIRA","","Isabela de Oliveira"],
-["14","19:05","13","001","INICIANTE IDADE LIVRE FEM","GRUPO A","MARCIA TREIB","KAMILY ZANATTA","Márcia Treib",""],
-["14","19:35","13","004","INICIANTE IDADE LIVRE FEM","GRUPO A","MARCIA TREIB","ELIANA CÁCERES","Márcia Treib",""],
-["14","19:50","10","003","ESPECIAL FEM","SEMIFINAL","Vencedor Jogo 002","KAROLINE GOMES OLIVEIRA GRUCHOSKI","","Karoline Gruchoski"],
-["14","20:05","12","005","INICIANTE IDADE LIVRE FEM","GRUPO A","MARCIA TREIB","MARINA SCHÄFFER","Márcia Treib",""],
-["15","08:00","7","007","SUB- 13 MASC","GRUPO G","FABIO GOMEZ","EMANUEL ADRIANO TESCHE","","Emanuel Adriano Tesche"],
-["15","08:00","9","009","SUB- 13 MASC","GRUPO I","JOÃO GUILHERME TREIB","SAMUEL MATSUMOTO","João Guilherme Treib",""],
-["15","08:00","12","012","SUB- 13 MASC","GRUPO E","MIGUEL BARBOSA","VITOR DE QUADROS SANTOS","Miguel Barbosa",""],
-["15","08:00","15","015","SUB- 13 MASC","GRUPO H","MANSUR GIBRAHIM MAHMOUD JOMAA","GUILHERME DARTORA","","Guilherme Dartora"],
-["15","08:25","2","002","MASTER 40 MASC","GRUPO C","MICHEL MATSUMOTO","ANDRÉ LUIZ DE OLIVEIRA","","André Luiz de Oliveira"],
-["15","08:25","3","003","MASTER 40 MASC","GRUPO D","LEONARDO QUEIROGA RAMIREZ","JULIO RODRIGUES","","Julio Rodrigues"],
-["15","08:25","5","005","MASTER 40 MASC","GRUPO B","JANDI BARBOSA","CARLOS ALVARENGA","Jandi Barbosa",""],
-["15","08:25","6","001","ABSOLUTO A MASC","GRUPO C","NESTOR CHAVES","BENJAMÍN NÚÑEZ","Nestor Chaves",""],
-["15","08:25","7","002","ABSOLUTO A MASC","GRUPO B","IGOR GAVAZZONI","GUSTAVO NAKAMURA MIURA","Igor Gavazzoni",""],
-["15","08:25","9","004","ABSOLUTO A MASC","GRUPO D","ALLEX SAKATA","KATIA KAWAI","Allex Sakata",""],
-["15","08:25","10","001","SUB- 19 MASC","GRUPO A","SAÚL RIVEROS","VICTOR CORAÇA","","Victor Coraça"],
-["15","08:25","20","003","MASTER 50 MASC","GRUPO C","OSWALDO FAGUNDES","Víctor Garcete","Oswaldo Fagundes",""],
-["15","08:25","21","004","MASTER 50 MASC","GRUPO D","JORGE DANIEL ROLDÁN","JANDIR MOTTER","","Jandir Motter"],
-["15","08:50","2","018","SUB- 13 MASC","GRUPO I","JOÃO GUILHERME TREIB","SAMUEL HENRIQUE LOBATO BARBOSA","João Guilherme Treib",""],
-["15","08:50","3","019","SUB- 13 MASC","GRUPO H","FABRICIO GÓMEZ","GUILHERME DARTORA","","Guilherme Dartora"],
-["15","08:50","12","028","SUB- 13 MASC","GRUPO E","MATÍAS ALVARENGA","MIGUEL BARBOSA","","Miguel Barbosa"],
-["15","08:50","14","030","SUB- 13 MASC","GRUPO G","EMANUEL ADRIANO TESCHE","MOHAMMAD KORYANI","Emanuel Adriano Tesche",""],
-["15","08:50","19","003","SUB- 19 MASC","GRUPO C","MATHEUS NASCIMENTO","JOSÉ FERNANDEZ","Matheus Nascimento",""],
-["15","09:15","14","012","MASTER 40 MASC","GRUPO B","EDGAR FRANCISCO ABADIE JUNIOR","JANDI BARBOSA","","Jandi Barbosa"],
-["15","09:15","15","001","SUB-9 MASC","GRUPO C","GABRIEL GODOY NARDI","MATIAS BARBOSA","","Matias Barbosa"],
-["15","09:15","17","007","ABSOLUTO A MASC","GRUPO C","NESTOR CHAVES","WESLEY VICTOR FERREIRA DA SILVA","Nestor Chaves",""],
-["15","09:15","18","008","ABSOLUTO A MASC","GRUPO A","EDUARDO GOMES OLIVEIRA GRUCHOSKI","JULIO RODRIGUES","Eduardo Gruchoski","Julio Rodrigues"],
-["15","09:15","19","005","MASTER 50 MASC","GRUPO D","OLIDES MILLEZI JUNIOR","JANDIR MOTTER","","Jandir Motter"],
-["15","09:15","20","006","MASTER 50 MASC","GRUPO C","ARIEL MELGAREJO","OSWALDO FAGUNDES","","Oswaldo Fagundes"],
-["15","09:40","5","037","SUB- 13 MASC","GRUPO E","LUCAS HIDEKI MAEDA","MIGUEL BARBOSA","","Miguel Barbosa"],
-["15","09:40","10","041","SUB- 13 MASC","GRUPO I","JOÃO GUILHERME TREIB","BENJAMÍN RODAS","João Guilherme Treib",""],
-["15","09:40","15","046","SUB- 13 MASC","GRUPO G","BENJAMIM KIN REFUNDINI","EMANUEL ADRIANO TESCHE","","Emanuel Adriano Tesche"],
-["15","09:40","16","047","SUB- 13 MASC","GRUPO H","GUILHERME DARTORA","EMANOEL SUKUO","Guilherme Dartora",""],
-["15","10:05","8","015","MASTER 40 MASC","GRUPO C","ANDRÉ LUIZ DE OLIVEIRA","SERGIO CÁCERES","André Luiz de Oliveira",""],
-["15","10:05","9","016","MASTER 40 MASC","GRUPO B","Oscar Gavilan","JANDI BARBOSA","","Jandi Barbosa"],
-["15","10:05","14","010","ABSOLUTO A MASC","GRUPO C","NESTOR CHAVES","FELIPE SUGUYAMA POLTRONIERI BORGES","Nestor Chaves",""],
-["15","10:05","15","011","ABSOLUTO A MASC","GRUPO A","EDUARDO GOMES OLIVEIRA GRUCHOSKI","VINÍCIUS DE LIMA ALBANO","Eduardo Gruchoski",""],
-["15","10:05","18","010","SUB- 19 MASC","GRUPO A","VICTOR CORAÇA","ANDRE LUIZ WELCOFF","Victor Coraça",""],
-["15","10:05","21","012","SUB- 19 MASC","GRUPO C","JOAQUÍN VERA Y ARAGÓN","MATHEUS NASCIMENTO","","Matheus Nascimento"],
-["15","10:30","8","004","ABSOLUTO D MASC","32 AVOS DE FINAL","DANIEL VINICIUS DE SOUZA MENEGASSI","RAFAEL FAGUNDES","","Rafael Fagundes"],
-["15","10:30","9","005","ABSOLUTO D MASC","32 AVOS DE FINAL","GUILHERME DARTORA","MIGUEL YUUKI REFUNDINI","Guilherme Dartora",""],
-["15","10:30","12","007","SUB-9 MASC","GRUPO C","MATIAS BARBOSA","HEITOR BLANCO DE MELLO","Matias Barbosa",""],
-["15","10:30","16","008","ABSOLUTO D MASC","32 AVOS DE FINAL","DIEGO FERNANDES","JANDIR MOTTER","","Jandir Motter"],
-["15","10:55","4","021","MASTER 40 MASC","GRUPO D","JULIO RODRIGUES","JULIANO NARDI","Julio Rodrigues",""],
-["15","10:55","9","014","ABSOLUTO D MASC","32 AVOS DE FINAL","MATEUS KLIEMANN","ARIEL MELGAREJO","Mateus Kliemann",""],
-["15","10:55","14","018","ABSOLUTO D MASC","32 AVOS DE FINAL","ANDRÉ LUIZ DE OLIVEIRA","JOSÉ FRANCISCO SALES FILHO","André Luiz de Oliveira",""],
-["15","10:55","22","015","ABSOLUTO A MASC","GRUPO B","PAULO HENRIQUE ZIELKE","IGOR GAVAZZONI","","Igor Gavazzoni"],
-["15","11:20","3","013","SUB- 19 MASC","GRUPO C","DANIEL VINICIUS DE SOUZA MENEGASSI","MATHEUS NASCIMENTO","","Matheus Nascimento"],
-["15","11:45","3","031","ABSOLUTO D MASC","32 AVOS DE FINAL","JANDI BARBOSA","MICHEL MATSUMOTO","Jandi Barbosa",""],
-["15","11:45","8","023","MASTER 40 MASC","GRUPO D","Santiago Bañuelos","JULIO RODRIGUES","","Julio Rodrigues"],
-["15","11:45","12","016","ABSOLUTO A MASC","GRUPO B","FABRÍCIO RAFAEL CARVALHO MARIN","IGOR GAVAZZONI","","Igor Gavazzoni"],
-["15","11:45","13","017","ABSOLUTO A MASC","GRUPO D","MARCELO MASSAHIKO KUMAGAI","ALLEX SAKATA","","Allex Sakata"],
-["15","13:00","6","029","MASTER 40 MASC","GRUPO C","Jorge Dure","ANDRÉ LUIZ DE OLIVEIRA","","André Luiz de Oliveira"],
-["15","13:00","11","019","ABSOLUTO A MASC","GRUPO A","JULIO RODRIGUES","DIONATHAN OLIVEIRA DA SILVA","Julio Rodrigues",""],
-["15","13:00","16","013","MASTER 50 MASC","GRUPO C","SILVIO FIGUEREDO","OSWALDO FAGUNDES","","Oswaldo Fagundes"],
-["15","13:25","3","018","SUB- 19 MASC","GRUPO A","Santino Pastore","VICTOR CORAÇA","","Victor Coraça"],
-["15","13:25","10","013","SUB-9 MASC","GRUPO C","AGUSTÍN TORRES","MATIAS BARBOSA","","Matias Barbosa"],
-["15","13:50","6","001","ABSOLUTO C FEM","GRUPO A","ISABELA DE OLIVEIRA","IOLANDA GUIMARÃES LOBATO","Isabela de Oliveira",""],
-["15","13:50","8","022","ABSOLUTO A MASC","GRUPO A","VINÍCIUS DE LIMA ALBANO","JULIO RODRIGUES","","Julio Rodrigues"],
-["15","13:50","9","023","ABSOLUTO A MASC","GRUPO D","EGON LOVATO","ALLEX SAKATA","","Allex Sakata"],
-["15","13:50","10","024","ABSOLUTO A MASC","GRUPO A","EDUARDO GOMES OLIVEIRA GRUCHOSKI","DIONATHAN OLIVEIRA DA SILVA","Eduardo Gruchoski",""],
-["15","13:50","12","015","MASTER 50 MASC","GRUPO D","JANDIR MOTTER","SERGIO CÁCERES","Jandir Motter",""],
-["15","13:50","22","003","ABSOLUTO C FEM","GRUPO B","FUJIE KIMURA","ELIANA CÁCERES","Fujie Kimura",""],
-["15","14:15","15","001","SUB- 19 FEM","GRUPO A","KAROLINE GOMES OLIVEIRA GRUCHOSKI","ÁMBAR FERNÁNDEZ","Karoline Gruchoski",""],
-["15","14:25","9","004","ABSOLUTO C FEM","GRUPO B","SAMARA ALINE RODRIGUES LESME","FUJIE KIMURA","","Fujie Kimura"],
-["15","14:25","11","006","ABSOLUTO C FEM","GRUPO A","RUTH ZAMA","IOLANDA GUIMARÃES LOBATO","Ruth Zama",""],
-["15","15:05","6","007","ABSOLUTO C FEM","GRUPO A","ISABELA DE OLIVEIRA","RUTH ZAMA","Isabela de Oliveira","Ruth Zama"],
-["15","15:40","2","002","MASTER 50 FEM","GRUPO A","RUTH ZAMA","FUJIE KIMURA","Ruth Zama","Fujie Kimura"],
-["15","15:40","12","005","SUB- 19 FEM","GRUPO A","KAROLINE GOMES OLIVEIRA GRUCHOSKI","LETICIA YUNA NOGUTI","Karoline Gruchoski",""],
-["15","16:15","3","003","MASTER 50 FEM","GRUPO A","HILDA YAEKO ENDO","RUTH ZAMA","","Ruth Zama"],
-["15","16:15","9","009","ABSOLUTO C FEM","GRUPO B","LETICIA YUNA NOGUTI","FUJIE KIMURA","","Fujie Kimura"],
-["15","16:50","2","004","MASTER 50 FEM","GRUPO A","IOLANDA GUIMARÃES LOBATO","FUJIE KIMURA","","Fujie Kimura"],
-["15","17:25","1","005","MASTER 50 FEM","GRUPO A","IOLANDA GUIMARÃES LOBATO","RUTH ZAMA","","Ruth Zama"],
-["15","17:25","2","006","MASTER 50 FEM","GRUPO A","FUJIE KIMURA","HILDA YAEKO ENDO","Fujie Kimura",""]];
+var ROWS=[["14","08:00","3","003","ABSOLUTO D MASC EQUIPE","OITAVAS DE FINAL","SONIBRAM","ASSOCIAÇÃO DOS MESATENISTAS DE CASCAVEL - AMC 1","","Equipe AMC 1","","",""],
+["14","08:00","11","001","SUB- 13 MASC EQUIPE","OITAVAS DE FINAL","FEDERACIÓN PARAGUAYA DE TENIS DE MESA 3","MATCH POINT","","MATCH POINT","","",""],
+["14","08:00","13","003","ABSOLUTO A MASC EQUIPE","QUARTAS DE FINAL","ASSOCIAÇÃO DOS MESATENISTAS DE CASCAVEL - AMC 1","AMG GUAÍRA","Equipe AMC 1","","","",""],
+["14","08:00","14","004","ABSOLUTO D MASC EQUIPE","QUARTAS DE FINAL","ASSOCIAÇÃO DOS MESATENISTAS DE CASCAVEL - AMC","TOLEDO","Equipe AMC","","0 × 2","Concluído","b"],
+["14","08:00","18","002","SUB- 15 MASC EQUIPE","QUARTAS DE FINAL","ASSOCIAÇÃO DOS MESATENISTAS DE CASCAVEL - AMC","Club Lapacho","Equipe AMC","","0 × 2","Concluído","b"],
+["14","08:00","19","004","ABSOLUTO A MASC EQUIPE","QUARTAS DE FINAL","ASSOCIAÇÃO DOS MESATENISTAS DE CASCAVEL - AMC 2","CTMPG","Equipe AMC 2","","","",""],
+["14","08:50","2","001","SUB-9 MASC EQUIPE","QUARTAS DE FINAL","ATEMEL/ACEL LONDRINA","ATMFOZ HEITOR E JOAQUIM","ATEMEL/ACEL LONDRINA","","","",""],
+["14","08:50","9","001","SUB-11 FEM EQUIPE","SEMIFINAL","AMG GUAÍRA","TOLEDO","","TOLEDO","","",""],
+["14","08:50","16","002","SUB- 19 FEM EQUIPE","SEMIFINAL","ASSOCIAÇÃO DE TENIS DE MESA DE FOZ DO IGUAÇU KAROL E NIHAN","AMG GUAÍRA","ASSOCIAÇÃO DE TENIS DE MESA DE FOZ DO IGUAÇU KAROL E NIHAN","","","",""],
+["14","08:50","20","002","MASTER 50 MASC EQUIPE","SEMIFINAL","ASSOCIAÇÃO DOS MESATENISTAS DE CASCAVEL - AMC","FEDERACIÓN PARAGUAYA DE TENIS DE MESA","Equipe AMC","","","",""],
+["14","09:40","6","005","ABSOLUTO A MASC EQUIPE","QUARTAS DE FINAL","Vencedor Jogo 002","ATEMEL/ACEL LONDRINA","","ATEMEL/ACEL LONDRINA","","",""],
+["14","09:40","7","006","ABSOLUTO A MASC EQUIPE","QUARTAS DE FINAL","Lapacho","ASSOCIAÇÃO DOS MESATENISTAS DE CASCAVEL - AMC 3","","Equipe AMC 3","","",""],
+["14","10:30","15","002","MASTER 40 MASC EQUIPE","FINAL","ASSOCIAÇÃO DOS MESATENISTAS DE CASCAVEL - AMC","Vencedor Jogo 001","Equipe AMC","","","",""],
+["14","10:30","17","002","ABSOLUTO C FEM EQUIPE","FINAL","ASSOCIAÇÃO DOS MESATENISTAS DE CASCAVEL - AMC","Vencedor Jogo 001","Equipe AMC","","","",""],
+["14","13:15","10","002","SUB-11 FEM","GRUPO B","MANUELA AYUMI POLIANI DOI","LETICIA RUFATI","","Letícia Rufati","","",""],
+["14","13:40","1","001","SUB- 17 MASC","GRUPO A","VICTOR CORAÇA","NICOLAS EMANUEL DE MELO PERALTA","Victor Coraça","","","",""],
+["14","13:40","18","007","SUB- 17 MASC","GRUPO G","TAIKI MATSUNAGA","MIGUEL SCUSSIATTO","","Miguel Scussiatto","","",""],
+["14","14:00","7","004","SUB-11 FEM","GRUPO B","AGUSTINA ELGUE","LETICIA RUFATI","","Letícia Rufati","","",""],
+["14","14:20","15","014","SUB- 17 MASC","GRUPO I","Bruno Martínez","JOÃO PAVILAKI","","João Pavilaki","","",""],
+["14","14:25","8","017","SUB- 17 MASC","GRUPO C","MATHEUS NASCIMENTO","DIOGO DE OLIVEIRA RIVILI","Matheus Nascimento","","","",""],
+["14","15:10","12","024","SUB- 17 MASC","GRUPO I","IVÁN GIMENEZ","JOÃO PAVILAKI","","João Pavilaki","","",""],
+["14","15:10","17","026","SUB- 17 MASC","GRUPO G","MIGUEL SCUSSIATTO","JOSÉ FERNANDEZ","Miguel Scussiatto","","","",""],
+["14","15:15","4","029","SUB- 17 MASC","GRUPO C","JOÃO PAULO BOFFO GONÇALVES","MATHEUS NASCIMENTO","","Matheus Nascimento","","",""],
+["14","15:15","6","031","SUB- 17 MASC","GRUPO A","VICTOR CORAÇA","GABRIEL ISSAMO EBUCHI DE PAULA","Victor Coraça","","","",""],
+["14","15:25","21","004","SUB- 15 MASC","32 AVOS DE FINAL","VICTOR MASSAYUKI ITO","EMANUEL ADRIANO TESCHE","","Emanuel Adriano Tesche","","",""],
+["14","15:30","14","006","SUB- 15 MASC","32 AVOS DE FINAL","MIGUEL BARBOSA","FABRICIO GÓMEZ","Miguel Barbosa","","","",""],
+["14","15:35","12","009","SUB- 15 MASC","16 AVOS DE FINAL","FABRICIO DOLDAN","JOÃO GUILHERME TREIB","","João Guilherme Treib","","",""],
+["14","16:00","7","039","SUB- 17 MASC","GRUPO G","ARTHUR VINÍCIUS LORSCHETTER MOKFA","MIGUEL SCUSSIATTO","","Miguel Scussiatto","","",""],
+["14","16:05","1","040","SUB- 17 MASC","GRUPO I","JOÃO PAVILAKI","DAVI TAKAYAMA","João Pavilaki","","","",""],
+["14","16:20","12","018","SUB- 15 MASC","16 AVOS DE FINAL","ARTHUR MIRANDA","PEDRO EGASHIRA","Arthur Miranda","","","",""],
+["14","16:25","4","023","SUB- 15 MASC","16 AVOS DE FINAL","JOÃO PAVILAKI","Vencedor Jogo 007","João Pavilaki","","","",""],
+["14","16:35","15","024","SUB- 15 MASC","16 AVOS DE FINAL","MIGUEL SCUSSIATTO","Vencedor Jogo 011","Miguel Scussiatto","","","",""],
+["14","17:05","11","002","SUB- 17 FEM","GRUPO B","NATALY MURDOCH","KAROLINE GOMES OLIVEIRA GRUCHOSKI","","Karoline Gruchoski","","",""],
+["14","17:35","1","001","ESPECIAL MASC","32 AVOS DE FINAL","LEONARDO SUPERTI","VICTOR CORAÇA","","Victor Coraça","","",""],
+["14","17:45","16","008","SUB- 17 FEM","GRUPO B","ISABELA DE OLIVEIRA","KAROLINE GOMES OLIVEIRA GRUCHOSKI","Isabela de Oliveira","Karoline Gruchoski","","",""],
+["14","18:00","6","005","ESPECIAL MASC","16 AVOS DE FINAL","EDUARDO GOMES OLIVEIRA GRUCHOSKI","Santino Pastore","Eduardo Gruchoski","","","",""],
+["14","18:15","4","011","ESPECIAL MASC","16 AVOS DE FINAL","JULIANO NARDI","JULIO RODRIGUES","","Julio Rodrigues","","",""],
+["14","18:15","10","013","ESPECIAL MASC","16 AVOS DE FINAL","FABRÍCIO RAFAEL CARVALHO MARIN","ALLEX SAKATA","","Allex Sakata","","",""],
+["14","18:15","11","014","ESPECIAL MASC","16 AVOS DE FINAL","MATHEUS ALBERTO RODRIGUEZ LESME","IGOR GAVAZZONI","","Igor Gavazzoni","","",""],
+["14","18:15","12","015","ESPECIAL MASC","16 AVOS DE FINAL","EMANUEL ADRIANO TESCHE","PEDRO EGASHIRA","Emanuel Adriano Tesche","","","",""],
+["14","18:20","5","018","ESPECIAL MASC","16 AVOS DE FINAL","FELIPE SUGUYAMA POLTRONIERI BORGES","MIGUEL BARBOSA","","Miguel Barbosa","","",""],
+["14","18:30","16","014","SUB- 17 FEM","GRUPO B","NATALY MURDOCH","ISABELA DE OLIVEIRA","","Isabela de Oliveira","","",""],
+["14","19:05","13","001","INICIANTE IDADE LIVRE FEM","GRUPO A","MARCIA TREIB","KAMILY ZANATTA","Márcia Treib","","","",""],
+["14","19:35","13","004","INICIANTE IDADE LIVRE FEM","GRUPO A","MARCIA TREIB","ELIANA CÁCERES","Márcia Treib","","","",""],
+["14","19:50","10","003","ESPECIAL FEM","SEMIFINAL","Vencedor Jogo 002","KAROLINE GOMES OLIVEIRA GRUCHOSKI","","Karoline Gruchoski","","",""],
+["14","20:05","12","005","INICIANTE IDADE LIVRE FEM","GRUPO A","MARCIA TREIB","MARINA SCHÄFFER","Márcia Treib","","","",""],
+["15","08:00","7","007","SUB- 13 MASC","GRUPO G","FABIO GOMEZ","EMANUEL ADRIANO TESCHE","","Emanuel Adriano Tesche","","",""],
+["15","08:00","9","009","SUB- 13 MASC","GRUPO I","JOÃO GUILHERME TREIB","SAMUEL MATSUMOTO","João Guilherme Treib","","","",""],
+["15","08:00","12","012","SUB- 13 MASC","GRUPO E","MIGUEL BARBOSA","VITOR DE QUADROS SANTOS","Miguel Barbosa","","","",""],
+["15","08:00","15","015","SUB- 13 MASC","GRUPO H","MANSUR GIBRAHIM MAHMOUD JOMAA","GUILHERME DARTORA","","Guilherme Dartora","","",""],
+["15","08:25","2","002","MASTER 40 MASC","GRUPO C","MICHEL MATSUMOTO","ANDRÉ LUIZ DE OLIVEIRA","","André Luiz de Oliveira","","",""],
+["15","08:25","3","003","MASTER 40 MASC","GRUPO D","LEONARDO QUEIROGA RAMIREZ","JULIO RODRIGUES","","Julio Rodrigues","","",""],
+["15","08:25","5","005","MASTER 40 MASC","GRUPO B","JANDI BARBOSA","CARLOS ALVARENGA","Jandi Barbosa","","","",""],
+["15","08:25","6","001","ABSOLUTO A MASC","GRUPO C","NESTOR CHAVES","BENJAMÍN NÚÑEZ","Nestor Chaves","","","",""],
+["15","08:25","7","002","ABSOLUTO A MASC","GRUPO B","IGOR GAVAZZONI","GUSTAVO NAKAMURA MIURA","Igor Gavazzoni","","","",""],
+["15","08:25","9","004","ABSOLUTO A MASC","GRUPO D","ALLEX SAKATA","KATIA KAWAI","Allex Sakata","","","",""],
+["15","08:25","10","001","SUB- 19 MASC","GRUPO A","SAÚL RIVEROS","VICTOR CORAÇA","","Victor Coraça","","",""],
+["15","08:25","20","003","MASTER 50 MASC","GRUPO C","OSWALDO FAGUNDES","Víctor Garcete","Oswaldo Fagundes","","","",""],
+["15","08:25","21","004","MASTER 50 MASC","GRUPO D","JORGE DANIEL ROLDÁN","JANDIR MOTTER","","Jandir Motter","","",""],
+["15","08:50","2","018","SUB- 13 MASC","GRUPO I","JOÃO GUILHERME TREIB","SAMUEL HENRIQUE LOBATO BARBOSA","João Guilherme Treib","","","",""],
+["15","08:50","3","019","SUB- 13 MASC","GRUPO H","FABRICIO GÓMEZ","GUILHERME DARTORA","","Guilherme Dartora","","",""],
+["15","08:50","12","028","SUB- 13 MASC","GRUPO E","MATÍAS ALVARENGA","MIGUEL BARBOSA","","Miguel Barbosa","","",""],
+["15","08:50","14","030","SUB- 13 MASC","GRUPO G","EMANUEL ADRIANO TESCHE","MOHAMMAD KORYANI","Emanuel Adriano Tesche","","","",""],
+["15","08:50","19","003","SUB- 19 MASC","GRUPO C","MATHEUS NASCIMENTO","JOSÉ FERNANDEZ","Matheus Nascimento","","","",""],
+["15","09:15","14","012","MASTER 40 MASC","GRUPO B","EDGAR FRANCISCO ABADIE JUNIOR","JANDI BARBOSA","","Jandi Barbosa","","",""],
+["15","09:15","15","001","SUB-9 MASC","GRUPO C","GABRIEL GODOY NARDI","MATIAS BARBOSA","","Matias Barbosa","","",""],
+["15","09:15","17","007","ABSOLUTO A MASC","GRUPO C","NESTOR CHAVES","WESLEY VICTOR FERREIRA DA SILVA","Nestor Chaves","","","",""],
+["15","09:15","18","008","ABSOLUTO A MASC","GRUPO A","EDUARDO GOMES OLIVEIRA GRUCHOSKI","JULIO RODRIGUES","Eduardo Gruchoski","Julio Rodrigues","","",""],
+["15","09:15","19","005","MASTER 50 MASC","GRUPO D","OLIDES MILLEZI JUNIOR","JANDIR MOTTER","","Jandir Motter","","",""],
+["15","09:15","20","006","MASTER 50 MASC","GRUPO C","ARIEL MELGAREJO","OSWALDO FAGUNDES","","Oswaldo Fagundes","","",""],
+["15","09:40","5","037","SUB- 13 MASC","GRUPO E","LUCAS HIDEKI MAEDA","MIGUEL BARBOSA","","Miguel Barbosa","","",""],
+["15","09:40","10","041","SUB- 13 MASC","GRUPO I","JOÃO GUILHERME TREIB","BENJAMÍN RODAS","João Guilherme Treib","","","",""],
+["15","09:40","15","046","SUB- 13 MASC","GRUPO G","BENJAMIM KIN REFUNDINI","EMANUEL ADRIANO TESCHE","","Emanuel Adriano Tesche","","",""],
+["15","09:40","16","047","SUB- 13 MASC","GRUPO H","GUILHERME DARTORA","EMANOEL SUKUO","Guilherme Dartora","","","",""],
+["15","10:05","8","015","MASTER 40 MASC","GRUPO C","ANDRÉ LUIZ DE OLIVEIRA","SERGIO CÁCERES","André Luiz de Oliveira","","","",""],
+["15","10:05","9","016","MASTER 40 MASC","GRUPO B","Oscar Gavilan","JANDI BARBOSA","","Jandi Barbosa","","",""],
+["15","10:05","14","010","ABSOLUTO A MASC","GRUPO C","NESTOR CHAVES","FELIPE SUGUYAMA POLTRONIERI BORGES","Nestor Chaves","","","",""],
+["15","10:05","15","011","ABSOLUTO A MASC","GRUPO A","EDUARDO GOMES OLIVEIRA GRUCHOSKI","VINÍCIUS DE LIMA ALBANO","Eduardo Gruchoski","","","",""],
+["15","10:05","18","010","SUB- 19 MASC","GRUPO A","VICTOR CORAÇA","ANDRE LUIZ WELCOFF","Victor Coraça","","","",""],
+["15","10:05","21","012","SUB- 19 MASC","GRUPO C","JOAQUÍN VERA Y ARAGÓN","MATHEUS NASCIMENTO","","Matheus Nascimento","","",""],
+["15","10:30","8","004","ABSOLUTO D MASC","32 AVOS DE FINAL","DANIEL VINICIUS DE SOUZA MENEGASSI","RAFAEL FAGUNDES","","Rafael Fagundes","","",""],
+["15","10:30","9","005","ABSOLUTO D MASC","32 AVOS DE FINAL","GUILHERME DARTORA","MIGUEL YUUKI REFUNDINI","Guilherme Dartora","","","",""],
+["15","10:30","12","007","SUB-9 MASC","GRUPO C","MATIAS BARBOSA","HEITOR BLANCO DE MELLO","Matias Barbosa","","","",""],
+["15","10:30","16","008","ABSOLUTO D MASC","32 AVOS DE FINAL","DIEGO FERNANDES","JANDIR MOTTER","","Jandir Motter","","",""],
+["15","10:55","4","021","MASTER 40 MASC","GRUPO D","JULIO RODRIGUES","JULIANO NARDI","Julio Rodrigues","","","",""],
+["15","10:55","9","014","ABSOLUTO D MASC","32 AVOS DE FINAL","MATEUS KLIEMANN","ARIEL MELGAREJO","Mateus Kliemann","","","",""],
+["15","10:55","14","018","ABSOLUTO D MASC","32 AVOS DE FINAL","ANDRÉ LUIZ DE OLIVEIRA","JOSÉ FRANCISCO SALES FILHO","André Luiz de Oliveira","","","",""],
+["15","10:55","22","015","ABSOLUTO A MASC","GRUPO B","PAULO HENRIQUE ZIELKE","IGOR GAVAZZONI","","Igor Gavazzoni","","",""],
+["15","11:20","3","013","SUB- 19 MASC","GRUPO C","DANIEL VINICIUS DE SOUZA MENEGASSI","MATHEUS NASCIMENTO","","Matheus Nascimento","","",""],
+["15","11:45","3","031","ABSOLUTO D MASC","32 AVOS DE FINAL","JANDI BARBOSA","MICHEL MATSUMOTO","Jandi Barbosa","","","",""],
+["15","11:45","8","023","MASTER 40 MASC","GRUPO D","Santiago Bañuelos","JULIO RODRIGUES","","Julio Rodrigues","","",""],
+["15","11:45","12","016","ABSOLUTO A MASC","GRUPO B","FABRÍCIO RAFAEL CARVALHO MARIN","IGOR GAVAZZONI","","Igor Gavazzoni","","",""],
+["15","11:45","13","017","ABSOLUTO A MASC","GRUPO D","MARCELO MASSAHIKO KUMAGAI","ALLEX SAKATA","","Allex Sakata","","",""],
+["15","13:00","6","029","MASTER 40 MASC","GRUPO C","Jorge Dure","ANDRÉ LUIZ DE OLIVEIRA","","André Luiz de Oliveira","","",""],
+["15","13:00","11","019","ABSOLUTO A MASC","GRUPO A","JULIO RODRIGUES","DIONATHAN OLIVEIRA DA SILVA","Julio Rodrigues","","","",""],
+["15","13:00","16","013","MASTER 50 MASC","GRUPO C","SILVIO FIGUEREDO","OSWALDO FAGUNDES","","Oswaldo Fagundes","","",""],
+["15","13:25","3","018","SUB- 19 MASC","GRUPO A","Santino Pastore","VICTOR CORAÇA","","Victor Coraça","","",""],
+["15","13:25","10","013","SUB-9 MASC","GRUPO C","AGUSTÍN TORRES","MATIAS BARBOSA","","Matias Barbosa","","",""],
+["15","13:50","6","001","ABSOLUTO C FEM","GRUPO A","ISABELA DE OLIVEIRA","IOLANDA GUIMARÃES LOBATO","Isabela de Oliveira","","","",""],
+["15","13:50","8","022","ABSOLUTO A MASC","GRUPO A","VINÍCIUS DE LIMA ALBANO","JULIO RODRIGUES","","Julio Rodrigues","","",""],
+["15","13:50","9","023","ABSOLUTO A MASC","GRUPO D","EGON LOVATO","ALLEX SAKATA","","Allex Sakata","","",""],
+["15","13:50","10","024","ABSOLUTO A MASC","GRUPO A","EDUARDO GOMES OLIVEIRA GRUCHOSKI","DIONATHAN OLIVEIRA DA SILVA","Eduardo Gruchoski","","","",""],
+["15","13:50","12","015","MASTER 50 MASC","GRUPO D","JANDIR MOTTER","SERGIO CÁCERES","Jandir Motter","","","",""],
+["15","13:50","22","003","ABSOLUTO C FEM","GRUPO B","FUJIE KIMURA","ELIANA CÁCERES","Fujie Kimura","","","",""],
+["15","14:15","15","001","SUB- 19 FEM","GRUPO A","KAROLINE GOMES OLIVEIRA GRUCHOSKI","ÁMBAR FERNÁNDEZ","Karoline Gruchoski","","","",""],
+["15","14:25","9","004","ABSOLUTO C FEM","GRUPO B","SAMARA ALINE RODRIGUES LESME","FUJIE KIMURA","","Fujie Kimura","","",""],
+["15","14:25","11","006","ABSOLUTO C FEM","GRUPO A","RUTH ZAMA","IOLANDA GUIMARÃES LOBATO","Ruth Zama","","","",""],
+["15","15:05","6","007","ABSOLUTO C FEM","GRUPO A","ISABELA DE OLIVEIRA","RUTH ZAMA","Isabela de Oliveira","Ruth Zama","","",""],
+["15","15:40","2","002","MASTER 50 FEM","GRUPO A","RUTH ZAMA","FUJIE KIMURA","Ruth Zama","Fujie Kimura","","",""],
+["15","15:40","12","005","SUB- 19 FEM","GRUPO A","KAROLINE GOMES OLIVEIRA GRUCHOSKI","LETICIA YUNA NOGUTI","Karoline Gruchoski","","","",""],
+["15","16:15","3","003","MASTER 50 FEM","GRUPO A","HILDA YAEKO ENDO","RUTH ZAMA","","Ruth Zama","","",""],
+["15","16:15","9","009","ABSOLUTO C FEM","GRUPO B","LETICIA YUNA NOGUTI","FUJIE KIMURA","","Fujie Kimura","","",""],
+["15","16:50","2","004","MASTER 50 FEM","GRUPO A","IOLANDA GUIMARÃES LOBATO","FUJIE KIMURA","","Fujie Kimura","","",""],
+["15","17:25","1","005","MASTER 50 FEM","GRUPO A","IOLANDA GUIMARÃES LOBATO","RUTH ZAMA","","Ruth Zama","","",""],
+["15","17:25","2","006","MASTER 50 FEM","GRUPO A","FUJIE KIMURA","HILDA YAEKO ENDO","Fujie Kimura","","","",""]];
 /* Quem joga em cada equipe, conforme as equipes cadastradas no site */
 var TM={
  "Equipe AMC 2|ABSOLUTO A MASC EQUIPE":["Victor Coraça","Allex Sakata"],
@@ -322,7 +325,7 @@ var data;
 if(imported){
   data={event:"Agenda do Atleta",sub:"",athletes:imported.athletes,matches:imported.matches.map(function(m){return m})};
 }else{
-  var matches=ROWS.map(function(r){return{id:r[0]+r[1]+r[2]+r[3]+r[4],d:r[0],t:r[1],c:"Mesa "+r[2],mesa:r[2],j:r[3],cat:r[4],r:r[5],a:r[6],b:r[7],ma:alias(r[8]),mb:alias(r[9]),mem:(TM[(r[8]||r[9])+"|"+r[4]]||[]).map(alias),sc:r[10]||"",st:r[11]||"",nx:NEXT[r[4]+"|"+r[3]]||null}});
+  var matches=ROWS.map(function(r){return{id:r[0]+r[1]+r[2]+r[3]+r[4],d:r[0],t:r[1],c:"Mesa "+r[2],mesa:r[2],j:r[3],cat:r[4],r:r[5],a:r[6],b:r[7],ma:alias(r[8]),mb:alias(r[9]),mem:(TM[(r[8]||r[9])+"|"+r[4]]||[]).map(alias),sc:r[10]||"",st:r[11]||"",w:r[12]||"",nx:NEXT[r[4]+"|"+r[3]]||null}});
   var names={};matches.forEach(function(m){[m.ma,m.mb].forEach(function(x){if(x&&(TEAMS.indexOf(x)>-1||!/^[A-ZÀ-Ý0-9 \/\-ÁÉÍÓÚÇ]+$/.test(x)))names[x]=1});m.mem.forEach(function(x){names[x]=1})});
   var ind=Object.keys(names).filter(function(n){return TEAMS.indexOf(n)<0}).sort(function(a,b){return a.localeCompare(b,"pt")});
   var tm=TEAMS.filter(function(n){return names[n]});
@@ -338,7 +341,7 @@ data.matches.forEach(function(m,i){
   if(m.d===undefined)m.d="14";
   if(m.mesa===undefined)m.mesa=String(m.c).replace(/\D+/g,"")||m.c;
 });
-function isDone(m){return !!done[m.id]||m.st==="Concluído"}
+function isDone(m){return !!done[m.id]||m.st==="Concluído"||m.st==="W.O."}
 function countdown(m){
   var h=String(m.t).split(":"), t=new Date(2026,10,+m.d,+h[0],+h[1]), diff=Math.round((t-new Date())/60000);
   if(diff>180||diff<-45)return "";
@@ -370,6 +373,15 @@ function nxHtml(m){
   });
   return h+'</div>';
 }
+function resHtml(m){
+  if(!m.st&&!m.sc)return "";
+  var side=m.ma&&!m.mb?"a":(m.mb&&!m.ma?"b":""), out="", cls="";
+  if(m.w&&side){out=m.w===side?"Vitória":"Derrota";cls=m.w===side?" win":" lose"}
+  else if(m.w){out="Venceu: "+pretty(m.w==="a"?m.a:m.b)}
+  var txt=(m.st==="W.O."?"W.O.":"Resultado")+(m.sc?": "+m.sc:"")+(out?" · "+out:"");
+  if(!m.sc&&!out&&m.st!=="W.O.")txt="Jogo concluído (resultado não divulgado)";
+  return '<div class="res'+cls+'">'+esc(txt)+'</div>';
+}
 function sideHtml(txt,mine){var t=isTbd(txt);return '<div class="side'+(mine?' me':'')+(t?' tbd':'')+'">'+esc(t?txt.replace("Vencedor","Vencedor do")+" (a definir)":pretty(txt))+'</div>'}
 function cardHtml(m){
   var d=isDone(m);
@@ -377,7 +389,7 @@ function cardHtml(m){
   '<div class="body"><div class="tags"><span class="tag court">'+esc(m.c)+'</span><span class="tag">'+esc(pretty(m.cat))+'</span><span class="tag">'+esc(title(m.r))+'</span></div>'+
   (m.mem&&m.mem.length?'<div class="mem">Do clube: '+esc(m.mem.join(" e "))+'</div>':'')+
   sideHtml(m.a,m.ma)+'<div class="x">contra</div>'+sideHtml(m.b,m.mb)+nxHtml(m)+
-  (m.sc?'<div class="mem">Placar: '+esc(m.sc)+'</div>':'')+
+  resHtml(m)+
   '<button class="finish" type="button" data-done="'+esc(m.id)+'">'+(d?'Jogo concluído':'Marcar como concluído')+'</button></div></article>';
 }
 
@@ -405,7 +417,7 @@ function viewMine(){
     h+='<div class="empty">Todos os jogos concluídos. Bom trabalho!</div>';
   }
   var prev=null, lastDay=null;
-  list.forEach(function(m){
+  pending.forEach(function(m){
     if(m.d!==lastDay){h+='<div class="day">'+esc(DAYS[m.d]||m.d)+'</div>';lastDay=m.d;prev=null}
     if(state.me!=="ALL"&&prev){
       var g=mins(m.t)-mins(prev.t);
@@ -414,6 +426,8 @@ function viewMine(){
     }
     h+=cardHtml(m); prev=m;
   });
+  var fin=list.filter(isDone);
+  if(fin.length){h+='<div class="day">Concluídos</div>';fin.forEach(function(m){h+=cardHtml(m)})}
   h+='<p class="note">Jogos com "a definir" aparecem depois que o adversário é decidido. Toque em "Ver ao vivo no site" para conferir mesa e horário atualizados.</p>';
   return h;
 }
@@ -428,6 +442,7 @@ function viewAll(){
     if(state.day&&m.d!==state.day)return false;
     return !q||norm([m.a,m.b,m.cat,m.r,m.c].join(" ")).indexOf(q)>-1;
   });
+  list=list.filter(function(m){return !isDone(m)}).concat(list.filter(isDone));
   h+= list.length? '<div style="display:grid;gap:12px">'+list.map(cardHtml).join("")+'</div>' : '<div class="empty">Nada encontrado para essa busca.</div>';
   return h;
 }
