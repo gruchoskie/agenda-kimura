@@ -18,7 +18,7 @@ for r in rows:
 def winner(x):
     """'a' ou 'b' quando dá para saber quem venceu: pelo placar ou porque avançou no chaveamento."""
     if x['status']=='Agendado': return ''
-    m=re.match(r'(\d+) × (\d+)$',x.get('sc',''))
+    m=re.match(r'(\d+) × (\d+)',x.get('sc',''))
     if m and m.group(1)!=m.group(2): return 'a' if int(m.group(1))>int(m.group(2)) else 'b'
     if x['fase'].startswith('GRUPO'): return ''
     key=(x['d'],x['t'])
